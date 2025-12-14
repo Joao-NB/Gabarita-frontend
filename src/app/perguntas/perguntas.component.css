@@ -1,3 +1,4 @@
+/* Confete */
 .confete {
   position: absolute;
   width: 8px;
@@ -5,9 +6,69 @@
   border-radius: 50%;
   z-index: 9999;
 }
+
+/* Feedback */
 .feedback {
   font-weight: bold;
 }
+
+/* Remove rolagem horizontal global */
+html, body {
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container principal */
+.bg-secondary {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+/* Container do quiz */
+.pergunta-container {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Alternativas */
+ul li {
+  word-break: break-word;
+  transform-origin: center;
+  transition: transform 0.25s ease;
+}
+
+/* Hover nas alternativas */
 .pergunta-container li:hover {
-  transform: scale(1.05);
+  transform: scale(1.02); /* escala leve para não ultrapassar tela */
+}
+
+/* Animação de tremor para erro */
+@keyframes tremer {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.tremer {
+  animation: tremer 0.5s ease-in-out;
+}
+
+/* Animação divertida para acerto */
+@keyframes comemorar {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2) rotate(-8deg); }
+  50% { transform: scale(1.4) rotate(8deg); }
+  75% { transform: scale(1.2) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.comemorar {
+  animation: comemorar 0.8s ease-in-out;
 }

@@ -1,4 +1,4 @@
-<div class="bg-secondary w-screen min-h-screen pt-8 flex flex-col items-center px-4 md:px-8 overflow-x-hidden">
+<div class="bg-secondary min-h-screen pt-8 flex flex-col items-center px-4 md:px-8">
   <!-- Cabeçalho -->
   <div class="flex justify-start items-start w-full mb-6">
     <img
@@ -11,7 +11,7 @@
   </div>
 
   <!-- Container quiz -->
-  <div class="bg-indigo-950 w-full max-w-4xl rounded-lg shadow-lg p-6 overflow-y-auto pergunta-container">
+  <div class="bg-indigo-950 w-full max-w-4xl rounded-lg shadow-lg p-6 overflow-y-auto overflow-x-hidden pergunta-container">
     <!-- Barra de progresso -->
     <div class="w-full bg-gray-600 h-4 rounded-full mb-4">
       <div id="barra-progresso" class="bg-yellow-400 h-4 rounded-full w-0 transition-all duration-500"></div>
@@ -22,38 +22,56 @@
     <div *ngIf="erro" class="text-red-500 text-center">{{ erro }}</div>
 
     <div *ngIf="!carregando && questoes.length > 0">
-      <h2 class="font-bold text-lg mb-2 text-white">Pergunta {{ perguntaAtual + 1 }}:</h2>
-      <p class="text-white mb-4">{{ questoes[perguntaAtual].enunciado }}</p>
+      <h2 class="font-bold text-lg mb-2 text-white">
+        Pergunta {{ perguntaAtual + 1 }}:
+      </h2>
+
+      <p class="text-white mb-4">
+        {{ questoes[perguntaAtual].enunciado }}
+      </p>
 
       <!-- Alternativas -->
       <ul class="pl-0 flex flex-col gap-3">
-        <li *ngFor="let letra of ['a','b','c','d']"
-            [id]="'alt-' + letra"
-            (click)="selecionarAlternativa(letra)"
-            class="cursor-pointer p-3 rounded-md text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-indigo-800 flex items-start gap-3"
-            [ngClass]="{
-              'bg-green-600': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
-              'bg-red-600': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta
-            }">
-          <span class="font-bold w-6 flex-shrink-0 text-left pt-1">{{ letra }})</span>
-          <span class="flex-1 break-words">{{ questoes[perguntaAtual].alternativas[letra] }}</span>
+        <li
+          *ngFor="let letra of ['a','b','c','d']"
+          [id]="'alt-' + letra"
+          (click)="selecionarAlternativa(letra)"
+          class="cursor-pointer p-3 rounded-md text-white transition-transform duration-200 ease-in-out flex items-start gap-3"
+          [ngClass]="{
+            'bg-green-600': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
+            'bg-red-600': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta
+          }"
+        >
+          <span class="font-bold w-6 flex-shrink-0 pt-1">{{ letra }})</span>
+          <span class="flex-1 break-words">
+            {{ questoes[perguntaAtual].alternativas[letra] }}
+          </span>
         </li>
       </ul>
 
       <!-- Feedback -->
-      <div *ngIf="feedback" id="feedback" class="mt-4 text-xl font-bold text-center text-white">
+      <div
+        *ngIf="feedback"
+        id="feedback"
+        class="mt-4 text-xl font-bold text-center text-white"
+      >
         {{ feedback }}
       </div>
 
       <!-- Explicação -->
-      <div *ngIf="mostrarExplicacao" class="mt-2 p-3 bg-indigo-800 rounded-lg text-gray-200">
+      <div
+        *ngIf="mostrarExplicacao"
+        class="mt-2 p-3 bg-indigo-800 rounded-lg text-gray-200"
+      >
         {{ questoes[perguntaAtual].explicacao }}
       </div>
 
       <!-- Próxima pergunta -->
       <div *ngIf="respostaSelecionada && temProximaPergunta()" class="mt-4 text-center">
-        <button (click)="proximaPergunta()"
-                class="bg-primary text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform">
+        <button
+          (click)="proximaPergunta()"
+          class="bg-primary text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
+        >
           Próxima
         </button>
       </div>
@@ -63,11 +81,16 @@
         <div class="mb-2 text-green-400 font-bold">
           🎉 Quiz concluído! Sua pontuação: {{ pontuacao }}/{{ questoes.length }}
         </div>
-        <button (click)="reiniciarQuiz()"
-                class="bg-yellow-400 text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform">
+        <button
+          (click)="reiniciarQuiz()"
+          class="bg-yellow-400 text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
+        >
           Reiniciar Quiz
         </button>
       </div>
+
+      <!-- Âncora de scroll -->
+      <div #scrollAnchor></div>
     </div>
   </div>
 </div>

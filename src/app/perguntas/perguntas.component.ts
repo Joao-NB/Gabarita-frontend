@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormNavegacaoComponent } from '../form-navegacao/form-navegacao.component';
@@ -20,6 +20,8 @@ interface Pergunta {
   styleUrls: ['./perguntas.component.css'],
 })
 export class PerguntasComponent implements OnInit {
+  @ViewChild('scrollAnchor') scrollAnchor!: ElementRef;
+
   questoes: Pergunta[] = [];
   carregando = true;
   erro: string | null = null;
@@ -32,7 +34,6 @@ export class PerguntasComponent implements OnInit {
   pontuacao = 0;
   isBrowser = typeof window !== 'undefined';
 
-  // ======== SONS ========
   somAcerto!: HTMLAudioElement;
   somErro!: HTMLAudioElement;
   somClick!: HTMLAudioElement;
@@ -45,7 +46,6 @@ export class PerguntasComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.carregarQuiz();
-
       this.somAcerto = new Audio('assets/sounds/certo.wav');
       this.somErro = new Audio('assets/sounds/erro.mp3');
       this.somClick = new Audio('assets/sounds/click.wav');
@@ -54,36 +54,27 @@ export class PerguntasComponent implements OnInit {
     }
   }
 
-  // 🔹 Método chamado ao gerar novo quiz
   carregarQuiz() {
     this.carregando = true;
     try {
       const respostaSalva = this.localStorageService.getItem('respostaSalva');
       if (!respostaSalva) {
-        this.erro = 'Nenhuma questão encontrada. Volte e gere o quiz.';
-        this.carregando = false;
+        this.erro = 'Nenhuma questão encontrada.';
         return;
       }
 
-      const data =
-        typeof respostaSalva === 'string' ? JSON.parse(respostaSalva) : respostaSalva;
+      const data = typeof respostaSalva === 'string'
+        ? JSON.parse(respostaSalva)
+        : respostaSalva;
 
-      if (data.questoes && data.questoes.length > 0) {
-        this.questoes = data.questoes;
+      this.questoes = data.questoes || [];
+      this.perguntaAtual = 0;
+      this.respostaSelecionada = null;
+      this.feedback = null;
+      this.mostrarExplicacao = false;
+      this.pontuacao = 0;
 
-        // 🔹 Reset completo do estado do quiz
-        this.perguntaAtual = 0;
-        this.respostaSelecionada = null;
-        this.feedback = null;
-        this.mostrarExplicacao = false;
-        this.pontuacao = 0;
-        gsap.to(`#barra-progresso`, { width: '0%', duration: 0.5 });
-      } else {
-        this.erro = 'Nenhuma questão disponível.';
-      }
-    } catch (err) {
-      console.error(err);
-      this.erro = 'Erro ao carregar questões.';
+      gsap.to('#barra-progresso', { width: '0%', duration: 0.5 });
     } finally {
       this.carregando = false;
     }
@@ -94,37 +85,47 @@ export class PerguntasComponent implements OnInit {
 
     this.respostaSelecionada = letra;
     const pergunta = this.questoes[this.perguntaAtual];
+    const containerAlternativa = document.getElementById(`alt-${letra}`);
+    const feedbackEl = document.getElementById('feedback');
 
     if (letra === pergunta.respostaCorreta) {
       this.feedback = '✔️ Acertou!';
       this.mostrarExplicacao = true;
       this.pontuacao++;
-      if (this.isBrowser) this.somAcerto.play();
+      this.somAcerto.play();
 
-      gsap.fromTo('#feedback', { scale: 0 }, { scale: 1.3, duration: 0.5, ease: 'elastic.out(1,0.5)' });
-      gsap.to(`#barra-progresso`, { width: `${((this.perguntaAtual + 1)/this.questoes.length)*100}%`, duration: 0.5 });
+      if (feedbackEl) {
+        feedbackEl.classList.remove('comemorar');
+        void feedbackEl.offsetWidth;
+        feedbackEl.classList.add('comemorar');
+      }
+
+      gsap.to('#barra-progresso', {
+        width: `${((this.perguntaAtual + 1) / this.questoes.length) * 100}%`,
+        duration: 0.5,
+      });
     } else {
       this.feedback = '❌ Errou! Tente novamente';
-      if (this.isBrowser) this.somErro.play();
+      this.somErro.play();
 
-      gsap.fromTo(`#alt-${letra}`, { x: -10 }, { x: 10, duration: 0.1, repeat: 5, yoyo: true });
+      if (containerAlternativa) {
+        containerAlternativa.classList.remove('tremer');
+        void containerAlternativa.offsetWidth;
+        containerAlternativa.classList.add('tremer');
+      }
     }
+
+    this.scrollParaBaixoSuave();
   }
 
   proximaPergunta() {
-    if (this.temProximaPergunta()) {
-      this.perguntaAtual++;
-      this.respostaSelecionada = null;
-      this.feedback = null;
-      this.mostrarExplicacao = false;
+    this.perguntaAtual++;
+    this.respostaSelecionada = null;
+    this.feedback = null;
+    this.mostrarExplicacao = false;
 
-      gsap.from('.pergunta-container', { opacity: 0, y: 50, duration: 0.5 });
-      if (this.isBrowser) this.somClick.play();
-    }
-  }
-
-  temProximaPergunta(): boolean {
-    return this.perguntaAtual < this.questoes.length - 1;
+    this.somClick.play();
+    this.scrollParaBaixoSuave();
   }
 
   reiniciarQuiz() {
@@ -133,27 +134,25 @@ export class PerguntasComponent implements OnInit {
     this.feedback = null;
     this.mostrarExplicacao = false;
     this.pontuacao = 0;
-    gsap.to(`#barra-progresso`, { width: '0%', duration: 0.5 });
 
-    if (this.isBrowser) this.somClick.play();
+    this.somClick.play();
+    this.scrollParaBaixoSuave();
   }
 
-  // 🔹 Voltar para home ao clicar na logo
+  scrollParaBaixoSuave() {
+    setTimeout(() => {
+      this.scrollAnchor?.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }, 100);
+  }
+
+  temProximaPergunta(): boolean {
+    return this.perguntaAtual < this.questoes.length - 1;
+  }
+
   irParaHome() {
-    this.router.navigate(['/']); // ajuste se sua rota home for '/home'
-  }
-
-  exibirConfete() {
-    const colors = ['#F87171','#34D399','#60A5FA','#FBBF24','#A78BFA'];
-    for (let i = 0; i < 50; i++) {
-      const confete = document.createElement('div');
-      confete.classList.add('confete');
-      confete.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-      confete.style.left = Math.random()*window.innerWidth + 'px';
-      confete.style.top = '0px';
-      document.body.appendChild(confete);
-
-      gsap.to(confete, { y: window.innerHeight + 50, rotation: Math.random()*360, duration: 3 + Math.random()*2, ease: 'power1.in', onComplete: () => confete.remove() });
-    }
+    this.router.navigate(['/']);
   }
 }

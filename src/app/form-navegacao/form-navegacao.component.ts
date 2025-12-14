@@ -21,7 +21,7 @@ export class FormNavegacaoComponent {
   faArrowRight = faArrowRight;
 
   materia = 'materia';
-  assunto = 'assunto';
+  assunto = '';
   carregando = false;
 
   clickSound!: HTMLAudioElement;
@@ -43,34 +43,56 @@ export class FormNavegacaoComponent {
     { value: 'materia', label: 'Matéria' },
   ];
 
-  constructor(private router: Router, private localStorageService: LocalStorageService) {
+  constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {
     if (typeof window !== 'undefined') {
       this.clickSound = new Audio('assets/sounds/click.wav');
     }
   }
 
   async onSubmit() {
-    if (this.materia !== 'materia' && this.assunto !== 'assunto') {
-      if (this.clickSound) this.clickSound.play(); // 🔹 Toca o som ao clicar
+    if (this.materia !== 'materia' && this.assunto.trim() !== '') {
+      if (this.clickSound) {
+        this.clickSound.currentTime = 0;
+        this.clickSound.play();
+      }
+
       this.carregando = true;
-      const dados = { materia: this.materia, assunto: this.assunto };
+
+      const dados = {
+        materia: this.materia,
+        assunto: this.assunto.trim(),
+      };
 
       try {
-        const response = await fetch('https://gabarita-backend-steel.vercel.app/api/quiz', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(dados),
-        });
+        const response = await fetch(
+          'https://gabarita-backend-steel.vercel.app/api/quiz',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados),
+          }
+        );
 
-        if (!response.ok) throw new Error('Erro na requisição: ' + response.statusText);
+        if (!response.ok) {
+          throw new Error('Erro na requisição: ' + response.statusText);
+        }
 
         const data = await response.json();
-        this.localStorageService.setItem('respostaSalva', JSON.stringify(data));
+        this.localStorageService.setItem(
+          'respostaSalva',
+          JSON.stringify(data)
+        );
 
-        this.quizGerado.emit(); // Avisar componente pai que quiz mudou
+        this.quizGerado.emit();
         this.router.navigate(['/perguntas']);
       } catch (error) {
-        console.error('Erro ao enviar dados ou armazenar localStorage:', error);
+        console.error(
+          'Erro ao enviar dados ou armazenar localStorage:',
+          error
+        );
       } finally {
         this.carregando = false;
       }
