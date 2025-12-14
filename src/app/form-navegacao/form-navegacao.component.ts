@@ -56,7 +56,7 @@ export class FormNavegacaoComponent {
       const dados = { materia: this.materia, assunto: this.assunto };
 
       try {
-        const response = await fetch('http://localhost:3000/api/quiz', {
+        const response = await fetch('https://gabarita-backend-steel.vercel.app/api/quiz', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(dados),
