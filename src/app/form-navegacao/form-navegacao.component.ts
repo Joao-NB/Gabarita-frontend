@@ -1,130 +1,79 @@
-  import { Component } from '@angular/core';
-  import { CommonModule } from '@angular/common';
-  import { Router } from '@angular/router';
-  import { FormsModule, NgForm } from '@angular/forms';
-  import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-  import {
-    faBars,
-    faBook,
-    faArrowRight,
-  } from '@fortawesome/free-solid-svg-icons';
-  import { ApiGeminiService } from '../_services/api-gemini.service';
-  import { GeminiSend } from '../_models/geminiSend';
-  import { LocalStorageService } from '../_services/local-storage.service';
-  @Component({
-    selector: 'app-form-navegacao',
-    standalone: true,
-    imports: [FontAwesomeModule, FormsModule, CommonModule],
-    templateUrl: './form-navegacao.component.html',
-    styleUrl: './form-navegacao.component.css',
-  })
-  export class FormNavegacaoComponent {
-    faBars = faBars;
-    faBook = faBook;
-    faArrowRight = faArrowRight;
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBars, faBook, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { LocalStorageService } from '../_services/local-storage.service';
 
-    opcoesMateria = [
-      {
-        value: 'matematica',
-        label: 'Matemática',
-      },
-      {
-        value: 'portugues',
-        label: 'Português',
-      },
-      {
-        value: 'historia',
-        label: 'História',
-      },
-      {
-        value: 'geografia',
-        label: 'Geografia',
-      },
-      {
-        value: 'fisica',
-        label: 'Física',
-      },
-      {
-        value: 'quimica',
-        label: 'Química',
-      },
-      {
-        value: 'biologia',
-        label: 'Biologia',
-      },
-      {
-        value: 'ingles',
-        label: 'Inglês',
-      },
-      {
-        value: 'espanhol',
-        label: 'Espanhol',
-      },
-      {
-        value: 'filosofia',
-        label: 'Filosofia',
-      },
-      {
-        value: 'sociologia',
-        label: 'Sociologia',
-      },
-      {
-        value: 'artes',
-        label: 'Artes',
-      },
-      {
-        value: 'educacao_fisica',
-        label: 'Educação Física',
-      },
-      {
-        value: 'materia',
-        label: 'Matéria',
-      },
-    ];
+@Component({
+  selector: 'app-form-navegacao',
+  standalone: true,
+  imports: [FontAwesomeModule, FormsModule, CommonModule],
+  templateUrl: './form-navegacao.component.html',
+  styleUrls: ['./form-navegacao.component.css'],
+})
+export class FormNavegacaoComponent {
+  @Output() quizGerado = new EventEmitter<void>();
 
-    constructor(private router: Router, private localStorageService: LocalStorageService) {}
-    
+  faBars = faBars;
+  faBook = faBook;
+  faArrowRight = faArrowRight;
 
-    materia = 'materia';
-    assunto = 'assunto';
+  materia = 'materia';
+  assunto = 'assunto';
+  carregando = false;
 
-    async onSubmit() {
-      if (this.materia !== 'materia' && this.assunto !== 'assunto') {
-        const dados = {
-          materia: this.materia,
-          assunto: this.assunto,
-        };
+  clickSound!: HTMLAudioElement;
 
-        try {
-          const response = await fetch(
-            'https://gabarita-backend-steel.vercel.app/api/quiz',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(dados),
-            }
-          );
+  opcoesMateria = [
+    { value: 'matematica', label: 'Matemática' },
+    { value: 'portugues', label: 'Português' },
+    { value: 'historia', label: 'História' },
+    { value: 'geografia', label: 'Geografia' },
+    { value: 'fisica', label: 'Física' },
+    { value: 'quimica', label: 'Química' },
+    { value: 'biologia', label: 'Biologia' },
+    { value: 'ingles', label: 'Inglês' },
+    { value: 'espanhol', label: 'Espanhol' },
+    { value: 'filosofia', label: 'Filosofia' },
+    { value: 'sociologia', label: 'Sociologia' },
+    { value: 'artes', label: 'Artes' },
+    { value: 'educacao_fisica', label: 'Educação Física' },
+    { value: 'materia', label: 'Matéria' },
+  ];
 
-          if (!response.ok) {
-            throw new Error('Erro na requisição: ' + response.statusText);
-          }
+  constructor(private router: Router, private localStorageService: LocalStorageService) {
+    if (typeof window !== 'undefined') {
+      this.clickSound = new Audio('assets/sounds/click.wav');
+    }
+  }
 
-          const data = await response.json();
+  async onSubmit() {
+    if (this.materia !== 'materia' && this.assunto !== 'assunto') {
+      if (this.clickSound) this.clickSound.play(); // 🔹 Toca o som ao clicar
+      this.carregando = true;
+      const dados = { materia: this.materia, assunto: this.assunto };
 
-          // Armazena a resposta em um cookie
-          this.localStorageService.setItem('respostaSalva', data);
-          console.log('Resposta salva no localStorage:', data);
-          this.router.navigate(['/perguntas']
+      try {
+        const response = await fetch('http://localhost:3000/api/quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados),
+        });
 
+        if (!response.ok) throw new Error('Erro na requisição: ' + response.statusText);
 
+        const data = await response.json();
+        this.localStorageService.setItem('respostaSalva', JSON.stringify(data));
 
-          );
-        } catch (error) {
-          console.error('Erro ao enviar dados ou armazenar cookie:', error);
-        }
+        this.quizGerado.emit(); // Avisar componente pai que quiz mudou
+        this.router.navigate(['/perguntas']);
+      } catch (error) {
+        console.error('Erro ao enviar dados ou armazenar localStorage:', error);
+      } finally {
+        this.carregando = false;
       }
+    }
   }
-  
-  }
+}

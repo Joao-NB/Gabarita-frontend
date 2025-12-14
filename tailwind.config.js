@@ -26,14 +26,23 @@ module.exports = {
       },
       animation: {
         bounceLogo: 'bounceLogo 1.5s infinite ease-in-out',
+        slide: 'slide 2s linear infinite',       // nova animação do loading
+        fadeIn: 'fadeIn 0.5s ease-in-out',      // nova animação do fade do loading
       },
       keyframes: {
         bounceLogo: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-4px)' },
         },
+        slide: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
       },
-      
     },
   },
   plugins: [
@@ -58,5 +67,3 @@ module.exports = {
     require('tailwind-scrollbar'),
   ],
 };
-
-

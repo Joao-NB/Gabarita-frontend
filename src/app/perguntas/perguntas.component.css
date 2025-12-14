@@ -1,0 +1,13 @@
+.confete {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  z-index: 9999;
+}
+.feedback {
+  font-weight: bold;
+}
+.pergunta-container li:hover {
+  transform: scale(1.05);
+}
