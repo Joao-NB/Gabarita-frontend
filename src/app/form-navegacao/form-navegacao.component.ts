@@ -21,7 +21,7 @@ export class FormNavegacaoComponent {
   faArrowRight = faArrowRight;
 
   materia = 'materia';
-  assunto = '';
+  assunto = ''; // ✅ começa vazio
   carregando = false;
 
   clickSound!: HTMLAudioElement;
@@ -68,7 +68,7 @@ export class FormNavegacaoComponent {
 
       try {
         const response = await fetch(
-          'https://gabarita-backend-steel.vercel.app/api/quiz',
+          'https://gabarita-backend.onrender.com/api/quiz',
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -1,4 +1,4 @@
-<div class="bg-secondary min-h-screen pt-8 flex flex-col items-center px-4 md:px-8">
+<div class="bg-gabarita w-screen min-h-screen pt-8 flex flex-col items-center px-4 md:px-8 overflow-x-hidden">
   <!-- Cabeçalho -->
   <div class="flex justify-start items-start w-full mb-6">
     <img
@@ -11,15 +11,23 @@
   </div>
 
   <!-- Container quiz -->
-  <div class="bg-indigo-950 w-full max-w-4xl rounded-lg shadow-lg p-6 overflow-y-auto overflow-x-hidden pergunta-container">
+  <div class="bg-gabaritaBlue w-full max-w-4xl rounded-lg shadow-lg p-6 overflow-y-auto pergunta-container">
     <!-- Barra de progresso -->
     <div class="w-full bg-gray-600 h-4 rounded-full mb-4">
-      <div id="barra-progresso" class="bg-yellow-400 h-4 rounded-full w-0 transition-all duration-500"></div>
+      <div
+        id="barra-progresso"
+        class="bg-yellow-400 h-4 rounded-full w-0 transition-all duration-500">
+      </div>
     </div>
 
     <!-- Loading / Erro -->
-    <div *ngIf="carregando" class="text-white text-center">Carregando questões...</div>
-    <div *ngIf="erro" class="text-red-500 text-center">{{ erro }}</div>
+    <div *ngIf="carregando" class="text-white text-center">
+      Carregando questões...
+    </div>
+
+    <div *ngIf="erro" class="text-red-500 text-center">
+      {{ erro }}
+    </div>
 
     <div *ngIf="!carregando && questoes.length > 0">
       <h2 class="font-bold text-lg mb-2 text-white">
@@ -36,13 +44,15 @@
           *ngFor="let letra of ['a','b','c','d']"
           [id]="'alt-' + letra"
           (click)="selecionarAlternativa(letra)"
-          class="cursor-pointer p-3 rounded-md text-white transition-transform duration-200 ease-in-out flex items-start gap-3"
+          class="cursor-pointer p-3 rounded-md text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-indigo-800 flex items-start gap-3"
           [ngClass]="{
             'bg-green-600': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
             'bg-red-600': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta
           }"
         >
-          <span class="font-bold w-6 flex-shrink-0 pt-1">{{ letra }})</span>
+          <span class="font-bold w-6 flex-shrink-0 pt-1">
+            {{ letra }})
+          </span>
           <span class="flex-1 break-words">
             {{ questoes[perguntaAtual].alternativas[letra] }}
           </span>
@@ -53,7 +63,7 @@
       <div
         *ngIf="feedback"
         id="feedback"
-        class="mt-4 text-xl font-bold text-center text-white"
+        class="mt-6 text-xl font-bold text-center text-white"
       >
         {{ feedback }}
       </div>
@@ -61,13 +71,13 @@
       <!-- Explicação -->
       <div
         *ngIf="mostrarExplicacao"
-        class="mt-2 p-3 bg-indigo-800 rounded-lg text-gray-200"
+        class="mt-4 p-3 bg-indigo-800 rounded-lg text-gray-200"
       >
         {{ questoes[perguntaAtual].explicacao }}
       </div>
 
       <!-- Próxima pergunta -->
-      <div *ngIf="respostaSelecionada && temProximaPergunta()" class="mt-4 text-center">
+      <div *ngIf="respostaSelecionada && temProximaPergunta()" class="mt-6 text-center">
         <button
           (click)="proximaPergunta()"
           class="bg-primary text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
@@ -77,10 +87,11 @@
       </div>
 
       <!-- Reiniciar quiz -->
-      <div *ngIf="respostaSelecionada && !temProximaPergunta()" class="mt-4 text-center">
+      <div *ngIf="respostaSelecionada && !temProximaPergunta()" class="mt-6 text-center">
         <div class="mb-2 text-green-400 font-bold">
           🎉 Quiz concluído! Sua pontuação: {{ pontuacao }}/{{ questoes.length }}
         </div>
+
         <button
           (click)="reiniciarQuiz()"
           class="bg-yellow-400 text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
@@ -88,9 +99,6 @@
           Reiniciar Quiz
         </button>
       </div>
-
-      <!-- Âncora de scroll -->
-      <div #scrollAnchor></div>
     </div>
   </div>
 </div>

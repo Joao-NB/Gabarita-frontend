@@ -1,8 +1,97 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import 'tailwind-scrollbar';
 
-.scrollbar-no-buttons::-webkit-scrollbar-button {
-    display: none;
-  } */
+/* =====================================
+   RESET GLOBAL
+===================================== */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* =====================================
+   BACKGROUND GABARITA
+===================================== */
+@layer utilities {
+  .bg-gabarita {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      #092086 0%,
+      #2026cc 100%
+    );
+  }
+
+  /* =====================================
+     LINHA DIAGONAL DE BOLINHAS (Fina)
+  ===================================== */
+  .bg-gabarita::before {
+    content: "";
+    position: absolute;
+
+    /* Linha fina */
+    top: -15%;
+    left: -40%;
+    width: 180%;
+    height: 32%;
+
+    /* Bolinhas quase coladas e irregulares */
+    background-image:
+      radial-gradient(
+        circle at 30% 30%,
+        rgba(10, 30, 110, 0.35) 2.4px,
+        transparent 3.6px
+      ),
+      radial-gradient(
+        circle at 70% 60%,
+        rgba(15, 40, 150, 0.25) 1.9px,
+        transparent 3.2px
+      );
+    background-size: 16px 16px;
+    background-repeat: repeat;
+
+    /* Diagonal */
+    transform: rotate(-18deg);
+
+    /* Fade de cima (escuro) pra baixo (claro) */
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.7) 40%,
+      rgba(0, 0, 0, 0) 100%
+    );
+
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* =====================================
+     PROFUNDIDADE LEVE
+  ===================================== */
+  .bg-gabarita::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.06),
+      transparent 40%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-gabarita > * {
+    position: relative;
+    z-index: 1;
+  }
+}

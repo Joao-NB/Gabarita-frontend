@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#F23054",
+        primary: "#1CA76B",
         secondary: "#0E2F56",
         tertiary: "#DB2A4B",
         background: "#1E1B4B",
@@ -16,6 +16,7 @@ module.exports = {
         textinputcolor: "#797979",
         'custom-thumb': '#231B8C', 
         'custom-track': '#1E1B4B',
+        gabaritaBlue: "#0b1a75",
       },
       fontFamily: {
         sans: "Inter",

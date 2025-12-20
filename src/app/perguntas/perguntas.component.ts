@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormNavegacaoComponent } from '../form-navegacao/form-navegacao.component';
@@ -20,8 +20,6 @@ interface Pergunta {
   styleUrls: ['./perguntas.component.css'],
 })
 export class PerguntasComponent implements OnInit {
-  @ViewChild('scrollAnchor') scrollAnchor!: ElementRef;
-
   questoes: Pergunta[] = [];
   carregando = true;
   erro: string | null = null;
@@ -56,6 +54,7 @@ export class PerguntasComponent implements OnInit {
 
   carregarQuiz() {
     this.carregando = true;
+
     try {
       const respostaSalva = this.localStorageService.getItem('respostaSalva');
       if (!respostaSalva) {
@@ -63,9 +62,10 @@ export class PerguntasComponent implements OnInit {
         return;
       }
 
-      const data = typeof respostaSalva === 'string'
-        ? JSON.parse(respostaSalva)
-        : respostaSalva;
+      const data =
+        typeof respostaSalva === 'string'
+          ? JSON.parse(respostaSalva)
+          : respostaSalva;
 
       this.questoes = data.questoes || [];
       this.perguntaAtual = 0;
@@ -75,6 +75,8 @@ export class PerguntasComponent implements OnInit {
       this.pontuacao = 0;
 
       gsap.to('#barra-progresso', { width: '0%', duration: 0.5 });
+    } catch (e) {
+      this.erro = 'Erro ao carregar quiz.';
     } finally {
       this.carregando = false;
     }
@@ -85,8 +87,6 @@ export class PerguntasComponent implements OnInit {
 
     this.respostaSelecionada = letra;
     const pergunta = this.questoes[this.perguntaAtual];
-    const containerAlternativa = document.getElementById(`alt-${letra}`);
-    const feedbackEl = document.getElementById('feedback');
 
     if (letra === pergunta.respostaCorreta) {
       this.feedback = '✔️ Acertou!';
@@ -94,62 +94,69 @@ export class PerguntasComponent implements OnInit {
       this.pontuacao++;
       this.somAcerto.play();
 
-      if (feedbackEl) {
-        feedbackEl.classList.remove('comemorar');
-        void feedbackEl.offsetWidth;
-        feedbackEl.classList.add('comemorar');
-      }
+      gsap.fromTo(
+        '#feedback',
+        { scale: 0 },
+        { scale: 1.2, duration: 0.6, ease: 'elastic.out(1,0.6)' }
+      );
 
       gsap.to('#barra-progresso', {
         width: `${((this.perguntaAtual + 1) / this.questoes.length) * 100}%`,
         duration: 0.5,
       });
+
+      this.scrollSuave();
     } else {
       this.feedback = '❌ Errou! Tente novamente';
       this.somErro.play();
 
-      if (containerAlternativa) {
-        containerAlternativa.classList.remove('tremer');
-        void containerAlternativa.offsetWidth;
-        containerAlternativa.classList.add('tremer');
-      }
-    }
+      gsap.fromTo(
+        `#alt-${letra}`,
+        { x: -10 },
+        { x: 10, repeat: 5, yoyo: true, duration: 0.1 }
+      );
 
-    this.scrollParaBaixoSuave();
+      this.scrollSuave();
+    }
+  }
+
+  scrollSuave() {
+    if (!this.isBrowser) return;
+
+    setTimeout(() => {
+      const el = document.getElementById('feedback');
+      if (el) {
+        el.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }
+    }, 300); // MAIS suave
   }
 
   proximaPergunta() {
+    if (!this.temProximaPergunta()) return;
+
     this.perguntaAtual++;
     this.respostaSelecionada = null;
     this.feedback = null;
     this.mostrarExplicacao = false;
-
     this.somClick.play();
-    this.scrollParaBaixoSuave();
+
+    gsap.from('.pergunta-container', {
+      opacity: 0,
+      y: 40,
+      duration: 0.4,
+    });
+  }
+
+  temProximaPergunta() {
+    return this.perguntaAtual < this.questoes.length - 1;
   }
 
   reiniciarQuiz() {
-    this.perguntaAtual = 0;
-    this.respostaSelecionada = null;
-    this.feedback = null;
-    this.mostrarExplicacao = false;
-    this.pontuacao = 0;
-
+    this.carregarQuiz();
     this.somClick.play();
-    this.scrollParaBaixoSuave();
-  }
-
-  scrollParaBaixoSuave() {
-    setTimeout(() => {
-      this.scrollAnchor?.nativeElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end',
-      });
-    }, 100);
-  }
-
-  temProximaPergunta(): boolean {
-    return this.perguntaAtual < this.questoes.length - 1;
   }
 
   irParaHome() {

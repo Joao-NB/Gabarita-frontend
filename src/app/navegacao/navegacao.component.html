@@ -1,27 +1,35 @@
 <div
-  class="bg-secondary min-h-screen w-screen
-         flex flex-col items-center
-         justify-center
-         overflow-hidden
-         p-4 relative"
+  class="bg-gabarita w-screen h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
 >
+  <!-- =========================
+       CONTEÚDO (FRENTE)
+       ========================= -->
+  <div class="relative z-10 flex flex-col items-center">
+    <!-- =========================
+         LOGO
+       ========================= -->
+    <img
+      #logo
+      src="../assets/images/logo_gabarita.png"
+      alt="Logo Gabarita"
+      class="w-60 md:w-72 select-none pointer-events-none"
+      draggable="false"
+    />
 
+    <!-- =========================
+         TÍTULO
+       ========================= -->
+    <h1
+      class="text-white mt-6 text-base md:text-lg font-bold tracking-widest text-center drop-shadow-lg"
+    >
+      ESTUDE E ALCANCE A APROVAÇÃO
+    </h1>
 
-  <!-- Logo -->
-  <img
-    class="w-32 animate-bounceLogo mb-4"
-    src="../assets/images/logo_transparent.png"
-    alt="logo"
-  />
-
-  <!-- Título -->
-  <h1
-    class="text-white mb-4 text-sm md:text-base font-bold text-center"
-  >
-    PREPARE-SE PARA O VESTIBULAR
-  </h1>
-
-  <!-- Form -->
-  <app-form-navegacao></app-form-navegacao>
-
+    <!-- =========================
+         FORMULÁRIO
+       ========================= -->
+    <div class="w-full flex justify-center mt-4">
+      <app-form-navegacao></app-form-navegacao>
+    </div>
+  </div>
 </div>
