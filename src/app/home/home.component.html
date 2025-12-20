@@ -1,44 +1,150 @@
-<div class="flex flex-col min-h-screen bg-gabarita px-4 py-4">
+<div class="w-full min-h-screen flex flex-col items-center bg-gabarita px-4 py-2 relative">
 
-  <!-- Container principal com flex para distribuir topo, conteúdo e rodapé -->
-  <div class="flex flex-col justify-between flex-1">
+  <!-- TOPO / LOGO -->
+  <div class="w-full flex flex-col items-center shrink-0 pt-2 z-10">
+    <img #logo 
+         src="../assets/images/logo_gabarita.png" 
+         alt="Gabarita Logo" 
+         class="w-52 md:w-80 h-auto md:max-h-[22vh] 
+                object-contain select-none pointer-events-none"
+         draggable="false">
+  </div>
 
-    <!-- TOPO / LOGO -->
-    <div class="flex flex-col items-center pt-4">
-      <img 
-        src="../assets/images/logo_gabarita.png" 
-        alt="Logo" 
-        class="w-52 md:w-80 h-auto md:max-h-[22vh] object-contain select-none pointer-events-none mb-4"
-        draggable="false"
-      />
-    </div>
+  <!-- ÁREA CENTRAL (CENTRALIZA O CARD NO MOBILE) -->
+  <div class="flex-1 w-full flex flex-col items-center justify-start md:justify-center z-10">
+    <!-- CONTAINER -->
+    <div class="w-full max-w-md flex flex-col items-stretch">
 
-    <!-- ÁREA CENTRAL (conteúdo / cards / formulários) -->
-    <div class="flex-1 flex flex-col items-center justify-center">
-      <div class="w-full max-w-md flex flex-col items-stretch">
+      <!-- ABAS -->
+      <div class="flex w-full gap-1">
+        <!-- ABA ANÔNIMO -->
+        <button (click)="selecionarAba('anonimo')"
+          class="flex-1 py-3 md:py-4 rounded-t-xl 
+                 font-black uppercase text-[14px] md:text-[15px] 
+                 tracking-tighter transition-all duration-200"
+          [ngClass]="abaAtiva === 'anonimo' 
+            ? 'bg-gabaritaBlue bg-opacity-50 backdrop-blur-md text-green-400 z-20 translate-y-[1px] mx-0 mb-0' 
+            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-left mx-1 mb-1'">
+          Anônimo
+        </button>
 
-        <!-- Exemplo de Card / Aba -->
-        <div class="bg-gabaritaBlue bg-opacity-60 backdrop-blur-md rounded-xl p-6 md:p-8 flex flex-col items-center justify-center shadow-2xl">
-          <!-- Conteúdo Anônimo -->
-          <div class="w-full animate-fadeIn flex flex-col items-center space-y-4 md:space-y-5">
-            <!-- Avatar / Input / Botão -->
+        <!-- ABA AUTENTICADO -->
+        <button (click)="selecionarAba('autenticado')"
+          class="flex-1 py-3 md:py-4 rounded-t-xl 
+                 font-black uppercase text-[14px] md:text-[15px] 
+                 tracking-tighter transition-all duration-200"
+          [ngClass]="abaAtiva === 'autenticado' 
+            ? 'bg-gabaritaBlue bg-opacity-50 backdrop-blur-md text-green-400 z-20 translate-y-[1px] mx-0 mb-0' 
+            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-right mx-1 mb-1'">
+          Autenticado
+        </button>
+      </div>
+
+      <!-- CARD -->
+      <div class="bg-gabaritaBlue bg-opacity-60 backdrop-blur-md 
+                  rounded-b-xl 
+                  p-6 md:p-8
+                  flex flex-col items-center justify-center 
+                  shadow-2xl relative z-10 mt-0">
+
+        <!-- ABA ANÔNIMO -->
+        <div *ngIf="abaAtiva === 'anonimo'" 
+             class="w-full animate-fadeIn flex flex-col items-center space-y-4 md:space-y-5">
+
+          <!-- AVATAR -->
+          <div class="relative">
+            <div class="rounded-full p-2 
+                        bg-gradient-to-br from-blue-600 via-indigo-500 to-cyan-400
+                        shadow-[0_0_20px_rgba(59,130,246,0.45)]">
+
+              <div #avatarEl
+                   class="w-20 h-20 md:w-24 md:h-24 rounded-full 
+                          bg-blue-500 bg-opacity-20 
+                          flex items-center justify-center
+                          text-4xl md:text-5xl select-none">
+                {{ personagemAtual }}
+              </div>
+            </div>
+
+            <button
+              (click)="trocarPersonagem()"
+              class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg 
+                     hover:scale-110 transition-transform 
+                     active:rotate-180 duration-300">
+              <svg class="w-4 h-4 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                </path>
+              </svg>
+            </button>
           </div>
 
-          <!-- Conteúdo Autenticado -->
-          <div class="w-full animate-fadeIn flex flex-col items-center space-y-6">
-            <!-- Botões / Formulário -->
+          <!-- INPUT -->
+          <div class="w-full text-center">
+            <p class="text-white text-[13px] md:text-[14px] 
+                      uppercase font-black mb-2 opacity-70 tracking-widest">
+              Escolha seu Nickname
+            </p>
+            <input type="text" placeholder="FilhoDoBil" 
+              class="w-full bg-white bg-opacity-10 border-none rounded-xl p-4 
+                     text-white text-center text-sm 
+                     focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all">
           </div>
+
+          <!-- BOTÃO -->
+          <button (click)="jogar()"
+            class="w-3/4 md:w-2/4 max-w-xs py-4 
+                   bg-green-500 text-white rounded-xl text-sm font-black uppercase 
+                   shadow-[0_5px_0_#15803d] 
+                   active:shadow-none active:translate-y-1 
+                   transition-all z-20">
+            <span class="mr-1 text-[15px]">▶</span> Começar Agora
+          </button>
+        </div>
+
+        <!-- ABA AUTENTICADO -->
+        <div *ngIf="abaAtiva === 'autenticado'" 
+             class="w-full animate-fadeIn flex flex-col items-center space-y-6">
+
+          <p class="text-white text-[14px] md:text-[15px] 
+                    uppercase font-black opacity-70 tracking-widest text-center">
+            Logue para ver seu score
+          </p>
+
+          <div class="flex flex-col gap-3 w-full">
+            <button
+              (click)="logar()"
+              class="w-full py-3 rounded-xl
+                     bg-gradient-to-r from-blue-600 to-indigo-600
+                     hover:from-blue-500 hover:to-indigo-500
+                     text-white font-bold uppercase tracking-wide
+                     transition-all duration-300
+                     shadow-lg hover:shadow-blue-500/30">
+              Entrar
+            </button>
+
+            <button
+              (click)="cadastrar()"
+              class="w-full text-xs text-blue-200 hover:text-white transition-colors
+                     uppercase font-bold tracking-tighter opacity-70 pt-2">
+              Ainda não tem conta?
+              <span class="underline underline-offset-2">Cadastre-se</span>
+            </button>
+          </div>
+
         </div>
 
       </div>
     </div>
-
-    <!-- RODAPÉ -->
-    <div class="flex justify-center gap-6 text-white text-opacity-30 text-[10px] font-bold uppercase tracking-widest pt-4">
-      <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Termos</a>
-      <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Privacidade</a>
-      <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Contato</a>
-    </div>
-
   </div>
+
+  <!-- RODAPÉ -->
+  <div class="w-full flex justify-center gap-6 text-white text-opacity-30 
+              text-[10px] font-bold uppercase tracking-widest 
+              shrink-0 pb-4 z-10">
+    <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Termos</a>
+    <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Privacidade</a>
+    <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Contato</a>
+  </div>
+
 </div>

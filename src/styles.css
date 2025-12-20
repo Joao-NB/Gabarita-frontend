@@ -5,38 +5,39 @@
 /* =====================================
    RESET GLOBAL
 ===================================== */
-html,
-body {
+html, body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;      /* força altura total da tela */
   margin: 0;
   padding: 0;
+  overflow: hidden;  /* evita scroll vertical */
   background-color: #081a5c;
-  overflow-x: hidden;
 }
+
 
 /* =====================================
    BACKGROUND GABARITA (MINIMAL BLUE)
 ===================================== */
 @layer utilities {
   .bg-gabarita {
-    position: relative;
-    min-height: 100vh;
-    height: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* mantém topo no mobile */
-    background:
-      radial-gradient(
-        circle at center,
-        #1f3cff 0%,
-        #0f2bb8 35%,
-        #081a5c 75%,
-        #050f3a 100%
-      );
-  }
+  position: relative;
+  width: 100%;
+  height: 100vh;        /* força ocupar exatamente a tela */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* centraliza verticalmente */
+  overflow: hidden;      /* evita qualquer rolagem desnecessária */
+  background:
+    radial-gradient(
+      circle at center,
+      #1f3cff 0%,
+      #0f2bb8 35%,
+      #081a5c 75%,
+      #050f3a 100%
+    );
+}
+
 
   /* Textura e efeitos visuais */
   .bg-gabarita::before {
