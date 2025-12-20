@@ -25,7 +25,7 @@
                  tracking-tighter transition-all duration-200"
           [ngClass]="abaAtiva === 'anonimo' 
             ? 'bg-gabaritaBlue bg-opacity-50 backdrop-blur-md text-green-400 z-20 translate-y-[1px] mx-0 mb-0' 
-            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-left mx-1 mb-1.5'">
+            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-left mx-1 mb-1'">
           Anônimo
         </button>
 
@@ -36,7 +36,7 @@
                  tracking-tighter transition-all duration-200"
           [ngClass]="abaAtiva === 'autenticado' 
             ? 'bg-gabaritaBlue bg-opacity-50 backdrop-blur-md text-green-400 z-20 translate-y-[1px] mx-0 mb-0' 
-            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-right mx-1 mb-1.5'">
+            : 'bg-black bg-opacity-75 text-white opacity-40 hover:opacity-60 z-10 scale-95 origin-bottom-right mx-1 mb-1'">
           Autenticado
         </button>
       </div>
@@ -86,7 +86,7 @@
                       uppercase font-black mb-2 opacity-70 tracking-widest">
               Escolha seu Nickname
             </p>
-            <input type="text" placeholder="EstudanteVeloz" 
+            <input type="text" placeholder="FilhoDoBil" 
               class="w-full bg-white bg-opacity-10 border-none rounded-xl p-4 
                      text-white text-center text-sm 
                      focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all">
@@ -94,12 +94,12 @@
 
           <!-- BOTÃO -->
           <button (click)="jogar()"
-            class="w-2/4 max-w-xs py-4 
+            class="w-3/4 md:w-2/4 max-w-xs py-4 
                    bg-green-500 text-white rounded-xl text-sm font-black uppercase 
                    shadow-[0_5px_0_#15803d] 
                    active:shadow-none active:translate-y-1 
                    transition-all z-20">
-            <span class="mr-2 text-[15px]">▶</span> Começar Agora
+            <span class="mr-1 text-[15px]">▶</span> Começar Agora
           </button>
         </div>
 
