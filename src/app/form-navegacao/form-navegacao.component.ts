@@ -21,8 +21,9 @@ export class FormNavegacaoComponent {
   faArrowRight = faArrowRight;
 
   materia = 'materia';
-  assunto = ''; // ✅ começa vazio
+  assunto = '';
   carregando = false;
+  erroFormulario: string | null = null; // ✅ nova variável para exibir erro
 
   clickSound!: HTMLAudioElement;
 
@@ -53,6 +54,9 @@ export class FormNavegacaoComponent {
   }
 
   async onSubmit() {
+    // Limpa erro anterior
+    this.erroFormulario = null;
+
     if (this.materia !== 'materia' && this.assunto.trim() !== '') {
       if (this.clickSound) {
         this.clickSound.currentTime = 0;
@@ -96,6 +100,9 @@ export class FormNavegacaoComponent {
       } finally {
         this.carregando = false;
       }
+    } else {
+      // Caso usuário não tenha selecionado matéria ou assunto
+      this.erroFormulario = '⚠️ Selecione a matéria e digite o assunto antes de continuar!';
     }
   }
 }

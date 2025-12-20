@@ -36,6 +36,34 @@ export class PerguntasComponent implements OnInit {
   somErro!: HTMLAudioElement;
   somClick!: HTMLAudioElement;
 
+  // Array de frases de acerto
+  frasesAcerto: string[] = [
+    '✔️ Acertou! Mandou bem!',
+    '🎯 Perfeito! Você é fera!',
+    '✨ Boom! Gabaritou!',
+    '💡 Eureka! Acertou!',
+    '🔥 Que tiro! Muito bem!',
+    '😎 Acerto de mestre!',
+    '🎉 Mandou super bem!',
+    '👍 Hit! Acertou na mosca!',
+    '🥳 Uau! Isso sim é conhecimento!',
+    '🏆 Ganhador de ouro!'
+  ];
+
+  // Array de frases de erro
+  frasesErro: string[] = [
+    '❌ Errou! Mas não desista!',
+    '😅 Ops, quase lá!',
+    '💥 Quem nunca, né?',
+    '⚡ Tentativa falha, mas vamos!',
+    '🫣 Não foi dessa vez!',
+    '🤔 Humm… quase acertou!',
+    '😬 Erro detectado! Tente novamente!',
+    '💡 Dica: a próxima é sua!',
+    '😜 Errar faz parte!',
+    '🔥 Não desanime, vamos de novo!'
+  ];
+
   constructor(
     private localStorageService: LocalStorageService,
     private router: Router
@@ -89,7 +117,10 @@ export class PerguntasComponent implements OnInit {
     const pergunta = this.questoes[this.perguntaAtual];
 
     if (letra === pergunta.respostaCorreta) {
-      this.feedback = '✔️ Acertou!';
+      // Sorteia uma frase aleatória de acerto
+      const indexAleatorio = Math.floor(Math.random() * this.frasesAcerto.length);
+      this.feedback = this.frasesAcerto[indexAleatorio];
+
       this.mostrarExplicacao = true;
       this.pontuacao++;
       this.somAcerto.play();
@@ -107,7 +138,10 @@ export class PerguntasComponent implements OnInit {
 
       this.scrollSuave();
     } else {
-      this.feedback = '❌ Errou! Tente novamente';
+      // Sorteia uma frase aleatória de erro
+      const indexErro = Math.floor(Math.random() * this.frasesErro.length);
+      this.feedback = this.frasesErro[indexErro];
+
       this.somErro.play();
 
       gsap.fromTo(

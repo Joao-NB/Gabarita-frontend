@@ -1,4 +1,5 @@
 <div class="relative w-full flex flex-col items-center">
+
   <!-- Formulário -->
   <form
     #formQuestoes="ngForm"
@@ -6,11 +7,9 @@
     *ngIf="!carregando"
   >
     <!-- Select Matéria -->
-    <div
-      class="flex items-center gap-4 text-slate-50 w-full md:w-auto
-             active:scale-[0.98] hover:scale-[1.01]
-             ease-in-out transition-all"
-    >
+    <div class="flex items-center gap-4 text-slate-50 w-full md:w-auto
+                active:scale-[0.98] hover:scale-[1.01]
+                ease-in-out transition-all">
       <select
         class="bg-gabaritaBlue text-slate-50 font-semibold appearance-none
                p-2 rounded-md shadow-sm outline-none
@@ -27,18 +26,15 @@
           {{ opcao.label }}
         </option>
       </select>
-
       <span class="ml-2">
         <fa-icon [icon]="faBook"></fa-icon>
       </span>
     </div>
 
     <!-- Input Assunto -->
-    <div
-      class="flex items-center gap-4 text-slate-50 w-full md:w-auto
-             active:scale-[0.98] hover:scale-[1.01]
-             ease-in-out transition-all"
-    >
+    <div class="flex items-center gap-4 text-slate-50 w-full md:w-auto
+                active:scale-[0.98] hover:scale-[1.01]
+                ease-in-out transition-all">
       <input
         type="text"
         class="bg-gabaritaBlue text-slate-50 font-semibold appearance-none
@@ -49,7 +45,6 @@
         [(ngModel)]="assunto"
         required
       />
-
       <span class="ml-2">
         <fa-icon [icon]="faBars"></fa-icon>
       </span>
@@ -59,12 +54,11 @@
     <button
       class="active:scale-[0.98] hover:scale-[1.01]
              ease-in-out transition-all
-              bg-green-500 text-white rounded-2xl text-sm font-black uppercase shadow-[0_5px_0_#15803d] active:shadow-none active:translate-y-1 transition-all px-6 md:pl-10 md:pr-7 py-2
+             bg-green-500 text-white rounded-2xl text-sm font-black uppercase shadow-[0_5px_0_#15803d] active:shadow-none active:translate-y-1 transition-all px-6 md:pl-10 md:pr-7 py-2
              text-slate-50 text-base md:text-sm font-semibold
              rounded-xl flex items-center justify-center
              gap-2 md:gap-3 w-full md:w-auto"
       type="submit"
-      [disabled]="formQuestoes.invalid"
       (click)="onSubmit()"
     >
       GERAR QUIZ
@@ -74,32 +68,37 @@
     </button>
   </form>
 
-  <!-- Loading (NÃO ALTERADO) -->
+  <!-- Mensagem de erro caso matéria ou assunto não selecionados -->
+  <div
+    *ngIf="erroFormulario"
+    class="mt-4 p-3 bg-red-600 bg-opacity-80 text-white rounded-xl shadow-lg font-bold text-center animate-fadeIn w-full max-w-md md:max-w-3xl"
+  >
+    {{ erroFormulario }}
+  </div>
+
+  <!-- Loading -->
   <div
     *ngIf="carregando"
-    class="flex flex-col items-center justify-center gap-4 p-6
-           bg-indigo-950 rounded-xl w-full max-w-md md:max-w-3xl
-           shadow-lg animate-fadeIn"
+    class="flex flex-col items-center justify-center gap-6 p-6
+           bg-gabaritaBlue/80 rounded-xl w-full max-w-md md:max-w-3xl
+           shadow-lg animate-fadeIn relative overflow-hidden"
   >
-    <div class="flex gap-4">
-      <div class="w-12 h-12 bg-primary rounded-full animate-bounce shadow-lg"></div>
-      <div
-        class="w-12 h-12 bg-secondary rounded-full animate-bounce shadow-lg delay-150"
-      ></div>
-      <div
-        class="w-12 h-12 bg-tertiary rounded-full animate-bounce shadow-lg delay-300"
-      ></div>
+    <!-- Interrogações animadas -->
+    <div class="flex gap-6 relative h-20">
+      <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay">?</span>
+      <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay delay-150">?</span>
+      <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay delay-300">?</span>
     </div>
 
-    <p
-      class="text-white font-bold text-lg md:text-xl animate-pulse text-center"
-    >
-      🧠 Gerando seu quiz épico...
+    <!-- Texto de loading -->
+    <p class="text-white font-bold text-lg md:text-xl animate-pulse text-center">
+    Preparando seu quiz épico...
     </p>
 
+    <!-- Barra de progresso animada -->
     <div class="w-full bg-indigo-800 h-2 rounded-full overflow-hidden">
       <div
-        class="h-2 bg-gradient-to-r from-primary via-secondary to-tertiary
+        class="h-2 bg-gradient-to-r from-purple-400 via-blue-500 to-blue-900
                animate-[slide_2s_linear_infinite]"
       ></div>
     </div>

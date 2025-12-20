@@ -1,0 +1,33 @@
+/* Gradiente para interrogações */
+.text-gradient {
+  background: linear-gradient(90deg, #B19DFF, #4D38FF, #0A1970);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animação de bounce com delays diferentes */
+@keyframes bounceDelay {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-bounceDelay {
+  animation: bounceDelay 0.6s infinite ease-in-out;
+}
+
+.animate-bounceDelay.delay-150 {
+  animation-delay: 0.15s;
+}
+
+.animate-bounceDelay.delay-300 {
+  animation-delay: 0.3s;
+}
+
+/* Barra de loading animada */
+@keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-[slide_2s_linear_infinite] {
+  animation: slide 2s linear infinite;
+}

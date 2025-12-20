@@ -10,14 +10,13 @@
          draggable="false">
   </div>
 
-  <!-- ÁREA CENTRAL -->
-  <div class="flex-1 w-full flex items-center justify-center z-10">
-
+  <!-- ÁREA CENTRAL (CENTRALIZA O CARD NO MOBILE) -->
+  <div class="flex-1 w-full flex flex-col items-center justify-center md:justify-start z-10">
     <!-- CONTAINER -->
-    <div class="w-full max-w-md flex flex-col">
+    <div class="w-full max-w-md flex flex-col items-stretch">
 
       <!-- ABAS -->
-      <div class="flex w-full">
+      <div class="flex w-full gap-1">
         <!-- ABA ANÔNIMO -->
         <button (click)="selecionarAba('anonimo')"
           class="flex-1 py-3 md:py-4 rounded-t-xl 
@@ -46,7 +45,7 @@
                   rounded-b-xl 
                   p-6 md:p-8
                   flex flex-col items-center justify-center 
-                  shadow-2xl relative z-10">
+                  shadow-2xl relative z-10 mt-0">
 
         <!-- ABA ANÔNIMO -->
         <div *ngIf="abaAtiva === 'anonimo'" 
