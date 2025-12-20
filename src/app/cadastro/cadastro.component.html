@@ -1,22 +1,21 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-gabarita px-4 relative">
+<div class="flex flex-col justify-center items-center min-h-screen bg-gabarita px-4 py-4">
 
   <!-- Logo -->
   <img 
-    class="w-36 sm:w-48 max-h-[20vh] sm:max-h-[22vh] animate-bounceLogo object-contain select-none pointer-events-none" 
+    class="w-36 sm:w-48 max-h-[20vh] sm:max-h-[22vh] animate-bounceLogo object-contain select-none pointer-events-none mb-4" 
     src="../assets/images/logo_gabarita.png" 
     alt="logo" 
   />
 
   <!-- Título "Cadastre-se no ..." -->
-  <h2 class="text-lg sm:text-xl font-semibold text-center text-slate-50 mt-6">
+  <h2 class="text-lg sm:text-xl font-semibold text-center text-slate-50 mb-6">
     Cadastre-se no EnemQuizz
   </h2>
 
   <!-- Contêiner de cadastro mais estreito -->
-  <div class="w-full max-w-md p-6 sm:p-8 bg-background rounded-lg shadow-lg mt-6">
+  <div class="w-full max-w-md p-6 sm:p-8 bg-background rounded-lg shadow-lg">
     <!-- Formulário de Cadastro -->
     <form class="space-y-4">
-      <!-- Nome do Usuário -->
       <div>
         <label for="username" class="block text-sm font-medium text-gray-400">Nome de Usuário</label>
         <input
@@ -29,7 +28,6 @@
         />
       </div>
 
-      <!-- E-mail -->
       <div>
         <label for="email" class="block text-sm font-medium text-gray-400">E-mail</label>
         <input
@@ -42,7 +40,6 @@
         />
       </div>
 
-      <!-- Senha -->
       <div>
         <label for="password" class="block text-sm font-medium text-gray-400">Senha</label>
         <input
@@ -55,7 +52,6 @@
         />
       </div>
 
-      <!-- Botão de Cadastro -->
       <div>
         <button
           type="submit"
@@ -69,7 +65,6 @@
     <!-- Botão de Login com Google -->
     <div class="mt-4 flex justify-center">
       <button class="flex items-center justify-center text-white gap-2 text-sm">
-        <!-- SVG do Google -->
         Entre com o Google
       </button>
     </div>
@@ -82,4 +77,5 @@
       </p>
     </div>
   </div>
+
 </div>
