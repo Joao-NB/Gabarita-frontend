@@ -1,34 +1,23 @@
-<div
-  class="bg-gabarita w-screen h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
->
-  <!-- =========================
-       CONTEÚDO (FRENTE)
-       ========================= -->
-  <div class="relative z-10 flex flex-col items-center">
-    <!-- =========================
-         LOGO
-       ========================= -->
+<div class="bg-gabarita w-screen min-h-screen flex flex-col items-center p-4 relative overflow-hidden">
+  <!-- Container central que cresce -->
+  <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto">
+    
+    <!-- Logo -->
     <img
       #logo
       src="../assets/images/logo_gabarita.png"
       alt="Logo Gabarita"
-      class="w-60 md:w-72 select-none pointer-events-none"
+      class="w-72 md:w-80 select-none pointer-events-none mb-6"
       draggable="false"
     />
 
-    <!-- =========================
-         TÍTULO
-       ========================= -->
-    <h1
-      class="text-white mt-6 text-base md:text-lg font-bold tracking-widest text-center drop-shadow-lg"
-    >
+    <!-- Título -->
+    <h1 class="text-white text-base md:text-lg font-bold tracking-widest text-center drop-shadow-lg mb-6">
       ESTUDE E ALCANCE A APROVAÇÃO
     </h1>
 
-    <!-- =========================
-         FORMULÁRIO
-       ========================= -->
-    <div class="w-full flex justify-center mt-4">
+    <!-- Formulário -->
+    <div class="w-full flex justify-center">
       <app-form-navegacao></app-form-navegacao>
     </div>
   </div>

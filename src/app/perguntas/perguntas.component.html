@@ -11,7 +11,7 @@
   </div>
 
   <!-- Container quiz -->
-  <div class="bg-gabaritaBlue w-full max-w-4xl rounded-lg shadow-lg p-6 overflow-y-auto pergunta-container">
+  <div class="bg-gabaritaBlue w-full max-w-4xl rounded-lg shadow-lg p-6 pergunta-container">
     <!-- Barra de progresso -->
     <div class="w-full bg-gray-600 h-4 rounded-full mb-4">
       <div
@@ -44,7 +44,7 @@
           *ngFor="let letra of ['a','b','c','d']"
           [id]="'alt-' + letra"
           (click)="selecionarAlternativa(letra)"
-          class="cursor-pointer p-3 rounded-md text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-indigo-800 flex items-start gap-3"
+          class="cursor-pointer p-3 rounded-md text-white transition-all duration-200 ease-in-out hover:scale-105 flex items-center gap-3"
           [ngClass]="{
             'bg-green-600': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
             'bg-red-600': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta
@@ -53,9 +53,9 @@
           <span class="font-bold w-6 flex-shrink-0 pt-1">
             {{ letra }})
           </span>
-          <span class="flex-1 break-words">
+          <div class="alternativa-texto flex-1 break-words">
             {{ questoes[perguntaAtual].alternativas[letra] }}
-          </span>
+          </div>
         </li>
       </ul>
 

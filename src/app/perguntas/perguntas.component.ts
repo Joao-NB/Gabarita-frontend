@@ -36,7 +36,6 @@ export class PerguntasComponent implements OnInit {
   somErro!: HTMLAudioElement;
   somClick!: HTMLAudioElement;
 
-  // Array de frases de acerto
   frasesAcerto: string[] = [
     '✔️ Acertou! Mandou bem!',
     '🎯 Perfeito! Você é fera!',
@@ -50,7 +49,6 @@ export class PerguntasComponent implements OnInit {
     '🏆 Ganhador de ouro!'
   ];
 
-  // Array de frases de erro
   frasesErro: string[] = [
     '❌ Errou! Mas não desista!',
     '😅 Ops, quase lá!',
@@ -117,7 +115,6 @@ export class PerguntasComponent implements OnInit {
     const pergunta = this.questoes[this.perguntaAtual];
 
     if (letra === pergunta.respostaCorreta) {
-      // Sorteia uma frase aleatória de acerto
       const indexAleatorio = Math.floor(Math.random() * this.frasesAcerto.length);
       this.feedback = this.frasesAcerto[indexAleatorio];
 
@@ -138,16 +135,16 @@ export class PerguntasComponent implements OnInit {
 
       this.scrollSuave();
     } else {
-      // Sorteia uma frase aleatória de erro
       const indexErro = Math.floor(Math.random() * this.frasesErro.length);
       this.feedback = this.frasesErro[indexErro];
 
       this.somErro.play();
 
+      // Shake apenas do texto interno
       gsap.fromTo(
-        `#alt-${letra}`,
-        { x: -10 },
-        { x: 10, repeat: 5, yoyo: true, duration: 0.1 }
+        `#alt-${letra} .alternativa-texto`,
+        { x: -5 },
+        { x: 5, repeat: 5, yoyo: true, duration: 0.1, force3D: true }
       );
 
       this.scrollSuave();
@@ -165,7 +162,7 @@ export class PerguntasComponent implements OnInit {
           block: 'center',
         });
       }
-    }, 300); // MAIS suave
+    }, 300);
   }
 
   proximaPergunta() {
