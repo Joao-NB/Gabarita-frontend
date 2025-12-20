@@ -11,8 +11,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background-color: #081a5c;
+   overflow-x: hidden;
 }
 
 /* =====================================
@@ -21,10 +21,9 @@ body {
 @layer utilities {
   .bg-gabarita {
     position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-
+     height: auto;
+  min-height: 100vh;
+     overflow-x: hidden;
     /* BASE: azul profundo + sensação de centro */
     background:
       radial-gradient(
