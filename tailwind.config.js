@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#F23054",
+        primary: "#1CA76B",
         secondary: "#0E2F56",
         tertiary: "#DB2A4B",
         background: "#1E1B4B",
@@ -16,6 +16,7 @@ module.exports = {
         textinputcolor: "#797979",
         'custom-thumb': '#231B8C', 
         'custom-track': '#1E1B4B',
+        gabaritaBlue: "#0b1a75",
       },
       fontFamily: {
         sans: "Inter",
@@ -26,14 +27,23 @@ module.exports = {
       },
       animation: {
         bounceLogo: 'bounceLogo 1.5s infinite ease-in-out',
+        slide: 'slide 2s linear infinite',       // nova animação do loading
+        fadeIn: 'fadeIn 0.5s ease-in-out',      // nova animação do fade do loading
       },
       keyframes: {
         bounceLogo: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-4px)' },
         },
+        slide: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
       },
-      
     },
   },
   plugins: [
@@ -58,5 +68,3 @@ module.exports = {
     require('tailwind-scrollbar'),
   ],
 };
-
-

@@ -1,0 +1,49 @@
+/* ================================
+   Rolagem Vertical e Estilo do Scroll
+================================ */
+
+/* Permite rolagem vertical e bloqueia horizontal */
+html, body {
+  overflow-x: hidden; /* bloqueia horizontal */
+  overflow-y: auto;   /* permite vertical */
+  scroll-behavior: smooth; /* rolagem suave */
+}
+
+/* Personalizando o scroll (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 25, 112, 0.2); /* Azul escuro translúcido */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #B19DFF 0%, #4D38FF 50%, #0A1970 100%);
+  border-radius: 8px;
+  border: 3px solid rgba(10, 25, 112, 0.2); /* espaço interno */
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #C6BFFF 0%, #5E4DFF 50%, #101F80 100%);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4D38FF rgba(10, 25, 112, 0.2);
+}
+
+/* Aplicando sombra leve ao scroll no container de quiz */
+.pergunta-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4D38FF rgba(10, 25, 112, 0.2);
+}
+
+/* Optional: efeito de hover no container para destacar scroll */
+.pergunta-container:hover::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #B19DFF 0%, #4D38FF 50%, #0A1970 100%);
+}
