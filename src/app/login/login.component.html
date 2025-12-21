@@ -1,66 +1,84 @@
-<div class="flex flex-col justify-center items-center min-h-screen bg-gabarita p-4">
+<div class="relative flex flex-col justify-center items-center min-h-screen bg-gabarita p-4 overflow-hidden">
+  
+  <div class="absolute top-6 left-6 z-[60]">
+    <button 
+      (click)="irParaHome()" 
+      class="flex items-center gap-2 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl transition-all duration-300 group active:scale-95 shadow-lg"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        class="w-5 h-5 text-blue-400 group-hover:-translate-x-1 transition-transform duration-300" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span class="text-white text-[11px] md:text-xs font-black uppercase tracking-[0.2em] select-none">
+        Voltar
+      </span>
+    </button>
+  </div>
 
-  <!-- Logo -->
-  <img
-    class="w-40 md:w-48 max-h-[20vh] md:max-h-[25vh] animate-bounceLogo object-contain select-none pointer-events-none mb-4"
-    src="../assets/images/logo_gabarita.png"
-    alt="logo"
-  />
+  <div class="absolute inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[2px] pointer-events-none">
+    <div class="bg-white/10 border border-white/20 px-8 py-4 rounded-2xl shadow-2xl transform -rotate-3 backdrop-blur-md">
+      <span class="text-white font-black text-2xl md:text-3xl tracking-[0.2em] uppercase opacity-90 drop-shadow-lg text-center block">
+        Feature ainda sendo feita
+      </span>
+    </div>
+  </div>
 
-  <!-- Título -->
-  <h2 class="text-lg md:text-xl font-semibold text-center text-slate-50 mb-6">
-    Faça login no EnemQuizz
-  </h2>
+  <div class="flex flex-col justify-center items-center w-full opacity-40 select-none pointer-events-none">
+    
+    <img
+      class="w-40 md:w-48 max-h-[20vh] md:max-h-[25vh] animate-bounceLogo object-contain mb-4"
+      src="../assets/images/logo_gabarita.png"
+      alt="logo"
+    />
 
-  <!-- Contêiner de login -->
-  <div class="w-full max-w-xs md:max-w-sm lg:max-w-md p-6 md:p-8 bg-background rounded-lg shadow-lg">
-    <!-- Formulário de Login -->
-    <form class="space-y-6">
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-200">E-mail</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="mt-1 block w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
-          placeholder="Digite seu e-mail"
-          required
-        />
-      </div>
+    <div class="w-full max-w-xs md:max-w-sm lg:max-w-md p-6 md:p-8 bg-background rounded-lg shadow-lg">
+      <form class="space-y-6">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-200">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            disabled
+            class="mt-1 block w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md shadow-sm"
+            placeholder="Digite seu e-mail"
+          />
+        </div>
 
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-200">Senha</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="mt-1 block w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
-          placeholder="Digite sua senha"
-          required
-        />
-      </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-200">Senha</label>
+          <input
+            type="password"
+            id="password"
+            disabled
+            class="mt-1 block w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-md shadow-sm"
+            placeholder="Digite sua senha"
+          />
+        </div>
 
-      <div class="mt-8 flex flex-col gap-4">
-        <a href="navegacao">
+        <div class="mt-8 flex flex-col gap-4">
           <button
-            type="submit"
-            class="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all w-full py-2 px-4 bg-primary text-white font-semibold rounded-xl shadow-lg"
+            type="button"
+            class="w-full py-2 px-4 bg-primary/50 text-white font-semibold rounded-xl shadow-lg cursor-not-allowed"
           >
             Entrar
           </button>
-        </a>
-        <button class="flex items-center justify-center text-white gap-2 text-sm">
-          Entre com o Google
-        </button>
-      </div>
-    </form>
+          <button type="button" class="flex items-center justify-center text-white gap-2 text-sm opacity-50">
+            Entre com o Google
+          </button>
+        </div>
+      </form>
 
-    <!-- Link para cadastro -->
-    <div class="mt-4 text-center">
-      <p class="text-sm text-gray-200">
-        Não tem uma conta?
-        <a href="cadastro" class="text-indigo-600 hover:text-indigo-700">Cadastre-se</a>
-      </p>
+      <div class="mt-4 text-center">
+        <p class="text-sm text-gray-200">
+          Não tem uma conta?
+          <span class="text-indigo-400 font-bold">Cadastre-se</span>
+        </p>
+      </div>
     </div>
   </div>
 </div>

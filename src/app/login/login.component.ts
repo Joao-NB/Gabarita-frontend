@@ -1,17 +1,19 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
   standalone: true,
-  styleUrls: ['./login.component.css']
+  imports: [CommonModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
 
-  onLogin(): void {
-    console.log('E-mail:', this.email);
-    console.log('Senha:', this.password);
+  constructor(private router: Router) {}
+
+  irParaHome(): void {
+    this.router.navigate(['/']);
   }
 }

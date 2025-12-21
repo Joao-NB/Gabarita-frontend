@@ -1,6 +1,6 @@
-<div class="bg-gabarita w-screen min-h-screen pt-8 flex flex-col items-center px-4 md:px-8 overflow-x-hidden">
-  <!-- Cabeçalho -->
-  <div class="flex justify-start items-start w-full mb-6">
+<div class="bg-gabarita w-screen h-screen flex flex-col items-center px-4 md:px-8 overflow-hidden">
+  
+  <div class="flex justify-start items-start w-full py-6 shrink-0 z-20">
     <img
       src="../assets/images/logo_gabarita.png"
       alt="logo"
@@ -10,94 +10,81 @@
     <app-form-navegacao (quizGerado)="carregarQuiz()"></app-form-navegacao>
   </div>
 
-  <!-- Container quiz -->
-  <div class="bg-gabaritaBlue w-full max-w-4xl rounded-lg shadow-lg p-6 pergunta-container">
-    <!-- Barra de progresso -->
-    <div class="w-full bg-gray-600 h-4 rounded-full mb-4">
-      <div
-        id="barra-progresso"
-        class="bg-yellow-400 h-4 rounded-full w-0 transition-all duration-500">
+  <div class="pergunta-container flex-1 w-full max-w-4xl mb-4 shadow-lg relative z-10 custom-scrollbar">
+    
+    <div class="sticky top-0 z-50 pt-2 pb-4 bg-transparent barra-wrapper">
+      <div class="flex justify-between items-end mb-1 px-1">
+        <span class="text-[10px] font-black text-blue-300 uppercase tracking-tighter">Progresso do Quiz</span>
+        <span class="text-[10px] font-black text-yellow-400">{{ (perguntaAtual / questoes.length * 100).toFixed(0) }}%</span>
+      </div>
+      <div class="w-full bg-black/40 h-3 rounded-full overflow-hidden backdrop-blur-sm border border-white/5 shadow-inner">
+        <div
+          id="barra-progresso"
+          class="bg-gradient-to-r from-yellow-500 via-yellow-300 to-yellow-500 h-full rounded-full w-0 transition-all duration-500 shadow-[0_0_15px_rgba(234,179,8,0.4)]">
+        </div>
       </div>
     </div>
 
-    <!-- Loading / Erro -->
-    <div *ngIf="carregando" class="text-white text-center">
-      Carregando questões...
+    <div *ngIf="carregando" class="text-white text-center py-10">
+      <p class="animate-pulse font-bold tracking-widest">CARREGANDO QUESTÕES...</p>
     </div>
 
-    <div *ngIf="erro" class="text-red-500 text-center">
+    <div *ngIf="erro" class="text-red-500 text-center py-10 font-bold">
       {{ erro }}
     </div>
 
-    <div *ngIf="!carregando && questoes.length > 0">
-      <h2 class="font-bold text-lg mb-2 text-white">
-        Pergunta {{ perguntaAtual + 1 }}:
+    <div *ngIf="!carregando && questoes.length > 0" class="animate-fadeIn mt-2">
+      <h2 class="font-black text-xl mb-3 text-white tracking-tight">
+        Pergunta {{ perguntaAtual + 1 }} <span class="text-blue-400">/ {{ questoes.length }}</span>
       </h2>
 
-      <p class="text-white mb-4">
+      <p class="text-white mb-8 text-lg md:text-xl font-medium leading-relaxed">
         {{ questoes[perguntaAtual].enunciado }}
       </p>
 
-      <!-- Alternativas -->
-      <ul class="pl-0 flex flex-col gap-3">
+      <ul class="flex flex-col gap-4">
         <li
           *ngFor="let letra of ['a','b','c','d']"
           [id]="'alt-' + letra"
           (click)="selecionarAlternativa(letra)"
-          class="cursor-pointer p-3 rounded-md text-white transition-all duration-200 ease-in-out hover:scale-105 flex items-center gap-3"
+          class="li-alternativa"
           [ngClass]="{
-            'bg-green-600': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
-            'bg-red-600': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta
+            'correct-alt': respostaSelecionada === letra && letra === questoes[perguntaAtual].respostaCorreta,
+            'wrong-alt': respostaSelecionada === letra && letra !== questoes[perguntaAtual].respostaCorreta,
+            'default-alt': respostaSelecionada !== letra
           }"
         >
-          <span class="font-bold w-6 flex-shrink-0 pt-1">
-            {{ letra }})
-          </span>
-          <div class="alternativa-texto flex-1 break-words">
+          <span class="letra-indicador">{{ letra }}</span>
+          <div class="alternativa-texto">
             {{ questoes[perguntaAtual].alternativas[letra] }}
           </div>
         </li>
       </ul>
 
-      <!-- Feedback -->
-      <div
-        *ngIf="feedback"
-        id="feedback"
-        class="mt-6 text-xl font-bold text-center text-white"
-      >
+      <div *ngIf="feedback" id="feedback" class="mt-10 text-2xl font-black text-center text-white italic tracking-tighter uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
         {{ feedback }}
       </div>
 
-      <!-- Explicação -->
-      <div
-        *ngIf="mostrarExplicacao"
-        class="mt-4 p-3 bg-indigo-800 rounded-lg text-gray-200"
-      >
+      <div *ngIf="mostrarExplicacao" class="mt-6 p-5 bg-indigo-950/60 border-l-4 border-indigo-400 rounded-r-xl text-indigo-100 text-sm md:text-base leading-relaxed animate-scaleUp">
+        <strong class="text-blue-300 uppercase text-xs block mb-1">Por que esta é a correta?</strong>
         {{ questoes[perguntaAtual].explicacao }}
       </div>
 
-      <!-- Próxima pergunta -->
-      <div *ngIf="respostaSelecionada && temProximaPergunta()" class="mt-6 text-center">
-        <button
+      <div class="py-10 text-center">
+        <button *ngIf="respostaSelecionada && temProximaPergunta()"
           (click)="proximaPergunta()"
-          class="bg-primary text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
-        >
-          Próxima
+          class="btn-proxima">
+          PRÓXIMA PERGUNTA ▶
         </button>
-      </div>
 
-      <!-- Reiniciar quiz -->
-      <div *ngIf="respostaSelecionada && !temProximaPergunta()" class="mt-6 text-center">
-        <div class="mb-2 text-green-400 font-bold">
-          🎉 Quiz concluído! Sua pontuação: {{ pontuacao }}/{{ questoes.length }}
+        <div *ngIf="respostaSelecionada && !temProximaPergunta()">
+          <div class="mb-6 text-green-400 font-black text-2xl animate-bounce">
+            🎯 QUIZ FINALIZADO!
+          </div>
+          <button (click)="reiniciarQuiz()" class="btn-reiniciar">
+            REFAZER QUIZ
+          </button>
         </div>
-
-        <button
-          (click)="reiniciarQuiz()"
-          class="bg-yellow-400 text-white px-6 py-2 rounded-xl hover:scale-105 transition-transform"
-        >
-          Reiniciar Quiz
-        </button>
       </div>
     </div>
   </div>

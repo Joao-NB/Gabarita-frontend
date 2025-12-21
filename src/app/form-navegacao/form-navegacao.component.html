@@ -1,109 +1,106 @@
 <div class="relative w-full flex flex-col items-center">
 
-  <!-- Formulário -->
   <form
     #formQuestoes="ngForm"
     class="bg-gabaritaBlue p-4 md:px-10 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 rounded-xl w-full max-w-md md:max-w-3xl"
     *ngIf="!carregando"
   >
-    <!-- Select Matéria -->
-    <div class="flex items-center gap-4 text-slate-50 w-full md:w-auto
-                active:scale-[0.98] hover:scale-[1.01]
-                ease-in-out transition-all">
-      <select
-        class="bg-gabaritaBlue text-slate-50 font-semibold appearance-none
-               p-2 rounded-md shadow-sm outline-none
-               w-full md:w-[140px]"
-        name="materia"
-        [(ngModel)]="materia"
-        required
-      >
-        <option
-          *ngFor="let opcao of opcoesMateria"
-          [value]="opcao.value"
-          [disabled]="opcao.value === materia"
-        >
-          {{ opcao.label }}
-        </option>
-      </select>
-      <span class="ml-2">
-        <fa-icon [icon]="faBook"></fa-icon>
-      </span>
-    </div>
-
-    <!-- Input Assunto -->
-    <div class="flex items-center gap-4 text-slate-50 w-full md:w-auto
-                active:scale-[0.98] hover:scale-[1.01]
-                ease-in-out transition-all">
+    <div class="relative w-full md:w-auto flex items-center">
       <input
         type="text"
-        class="bg-gabaritaBlue text-slate-50 font-semibold appearance-none
-               p-2 rounded-md shadow-sm outline-none
-               w-full md:w-[140px]"
-        placeholder="Assunto"
+        class="w-full md:w-[220px] p-2 pr-10 bg-gabaritaBlue rounded-md shadow-md font-semibold outline-none cursor-pointer text-white placeholder-white/80"
+        placeholder="Selecionar Matéria"
+        [value]="buscaMateria"
+        (click)="abrirDropdown = true"
+        readonly
+      />
+      <fa-icon 
+        [icon]="faBook" 
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-white pointer-events-none"
+      ></fa-icon>
+    </div>
+
+    <div class="relative w-full md:w-auto flex items-center">
+      <input
+        type="text"
+        class="w-full md:w-[200px] p-2 pr-10 bg-gabaritaBlue text-white font-semibold rounded-md shadow-md outline-none placeholder-white/70"
+        placeholder="Escreva o Assunto"
         name="assunto"
         [(ngModel)]="assunto"
         required
       />
-      <span class="ml-2">
-        <fa-icon [icon]="faBars"></fa-icon>
-      </span>
+      <fa-icon 
+        [icon]="faBars" 
+        class="absolute right-3 top-1/2 -translate-y-1/2 text-white pointer-events-none"
+      ></fa-icon>
     </div>
 
-    <!-- Botão -->
-<button
-  class="active:scale-[0.98] hover:scale-[1.01]
-         ease-in-out transition-all
-         bg-green-500 text-white rounded-2xl text-sm font-black uppercase shadow-[0_5px_0_#15803d] active:shadow-none active:translate-y-1
-         px-6 py-2
-         text-slate-50 text-base md:text-sm font-semibold
-         flex items-center justify-center
-         gap-2 md:gap-3
-         w-full md:min-w-[193px] md:px-10"
-  type="submit"
-  (click)="onSubmit()"
->
-  GERAR QUIZ
-  <span>
-    <fa-icon [icon]="faArrowRight" class="text-lg"></fa-icon>
-  </span>
-</button>
-
+    <button
+      class="active:scale-[0.98] hover:scale-[1.01] ease-in-out transition-all bg-green-500 text-white rounded-2xl text-sm font-black uppercase shadow-[0_5px_0_#15803d] active:shadow-none active:translate-y-1 px-6 py-2 flex items-center justify-center gap-2 md:gap-3 w-full md:min-w-[195px] md:px-10"
+      type="submit"
+      (click)="onSubmit()"
+    >
+      GERAR QUIZ
+      <span>
+        <fa-icon [icon]="faArrowRight" class="text-lg"></fa-icon>
+      </span>
+    </button>
   </form>
 
-  <!-- Mensagem de erro caso matéria ou assunto não selecionados -->
-  <div
-    *ngIf="erroFormulario"
-    class="mt-4 p-3 bg-red-600 bg-opacity-80 text-white rounded-xl shadow-lg font-bold text-center animate-fadeIn w-full max-w-md md:max-w-3xl"
-  >
+  <div *ngIf="erroFormulario" class="mt-4 p-3 bg-red-600 bg-opacity-80 text-white rounded-xl shadow-lg font-bold text-center animate-fadeIn w-full max-w-md md:max-w-3xl">
     {{ erroFormulario }}
   </div>
 
-  <!-- Loading -->
-  <div
-    *ngIf="carregando"
-    class="flex flex-col items-center justify-center gap-6 p-6
-           bg-gabaritaBlue/80 rounded-xl w-full max-w-md md:max-w-3xl
-           shadow-lg animate-fadeIn relative overflow-hidden"
-  >
-    <!-- Interrogações animadas -->
+  <div *ngIf="carregando" class="mt-10 flex flex-col items-center justify-center gap-6 p-6 bg-gabaritaBlue/80 rounded-xl w-full max-w-md md:max-w-3xl shadow-lg animate-fadeIn relative overflow-hidden">
     <div class="flex gap-6 relative h-20">
       <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay">?</span>
       <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay delay-150">?</span>
       <span class="text-4xl md:text-5xl font-black text-gradient animate-bounceDelay delay-300">?</span>
     </div>
+    <p class="text-white font-bold text-lg md:text-xl animate-pulse text-center">Preparando seu quiz épico...</p>
+    <div class="w-full bg-indigo-900/50 h-2 rounded-full overflow-hidden">
+      <div class="h-2 bg-gradient-to-r from-blue-400 to-blue-600 animate-loadingSlide"></div>
+    </div>
+  </div>
 
-    <!-- Texto de loading -->
-    <p class="text-white font-bold text-lg md:text-xl animate-pulse text-center">
-    Preparando seu quiz épico...
-    </p>
+  <div
+    *ngIf="abrirDropdown"
+    (click)="abrirDropdown = false"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm animate-fadeIn"
+  >
+    <div
+      (click)="$event.stopPropagation()"
+      class="modal-gabarita-container animated-long-trail w-[90%] max-w-[380px] animate-scaleUp"
+    >
+      <div class="modal-inner-content">
+        <div class="bg-[#0a1970] p-6 border-b border-white/10 flex flex-col items-center">
+          <div class="w-12 h-1 bg-white/20 rounded-full mb-4"></div>
+          <h3 class="text-white font-black uppercase tracking-[3px] text-lg">Selecionar Matéria</h3>
+        </div>
 
-    <!-- Barra de progresso animada -->
-    <div class="w-full bg-indigo-800 h-2 rounded-full overflow-hidden">
-      <div
-        class="h-2 bg-gradient-to-r from-purple-400 via-blue-500 to-blue-900
-               animate-[slide_2s_linear_infinite]"
-      ></div>
+        <div class="p-6 flex flex-col max-h-[480px] bg-[#050a2d]">
+          <div class="relative mb-5 flex items-center">
+            <input
+              type="text"
+              placeholder="Pesquisar matéria..."
+              [(ngModel)]="buscaMateria"
+              class="w-full p-4 pr-12 rounded-2xl bg-black/40 border border-blue-500/30 text-white outline-none focus:border-blue-400 transition-all placeholder-white/20 font-medium"
+            />
+            <fa-icon [icon]="faSearch" class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-500/50"></fa-icon>
+          </div>
+
+          <ul class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+            <li *ngFor="let m of materiasFiltradas" (click)="selecionarMateria(m)" class="materia-item">
+              <span class="font-bold tracking-wide transition-all">{{ m.label }}</span>
+              <div class="materia-indicator"></div>
+            </li>
+          </ul>
+
+          <button (click)="abrirDropdown = false" class="btn-fechar-gabarita">
+            FECHAR JANELA
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

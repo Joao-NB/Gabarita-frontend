@@ -1,79 +1,110 @@
 /* ================================
-   Container do Quiz
+   Container e Scroll
 ================================ */
 .pergunta-container {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: calc(100vh - 100px);
-  max-width: 100%;
-  padding: 1.5rem;
+  padding: 0 1.5rem 1.5rem 1.5rem; /* Removi padding topo para a barra colar */
   background-color: #0b1971;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  scrollbar-width: thin;
-  scrollbar-color: #4D38FF rgba(10, 25, 112, 0.2);
+  border-radius: 1.5rem;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Scrollbars customizadas */
-.pergunta-container::-webkit-scrollbar {
-  width: 12px;
-}
-.pergunta-container::-webkit-scrollbar-track {
-  background: rgba(10, 25, 112, 0.2);
-  border-radius: 8px;
-}
-.pergunta-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #B19DFF 0%, #4D38FF 50%, #0A1970 100%);
-  border-radius: 8px;
-  border: 3px solid rgba(10, 25, 112, 0.2);
-  transition: background 0.3s;
-}
-.pergunta-container::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #C6BFFF 0%, #5E4DFF 50%, #101F80 100%);
+/* EFEITO DE TRANSPARÊNCIA NA BARRA AO ROLAR */
+.barra-wrapper {
+  background: linear-gradient(to bottom, #0b1971 70%, transparent);
+  transition: opacity 0.3s ease;
+  backdrop-blur: 4px;
 }
 
-/* Alternativas */
-ul { padding-left: 0; }
+/* Quando o container scrolla, a barra ganha uma leve transparência */
+.pergunta-container:not([scrollTop="0"]) .barra-wrapper {
+  opacity: 0.9;
+}
 
-li {
+/* ================================
+   Alternativas Estilizadas
+================================ */
+.li-alternativa {
   cursor: pointer;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
   color: white;
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  overflow: hidden;
-  max-width: 100%;
-  word-break: break-word;
-  box-sizing: border-box;
-  transform: translateX(0);
+  gap: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-li span:first-child {
+.letra-indicador {
   width: 2rem;
+  height: 2rem;
   flex-shrink: 0;
-  text-align: right;
+  background: rgba(255,255,255,0.1);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
-li:hover { transform: scale(1.05); }
-
-li.bg-green-600,
-li.bg-red-600 {
-  transition: background-color 0.3s ease-in-out;
+.default-alt:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateX(5px);
 }
 
-.alternativa-texto {
-  flex: 1;
-  word-break: break-word;
+.correct-alt { background: #16a34a !important; border-color: #22c55e !important; }
+.wrong-alt { background: #dc2626 !important; border-color: #ef4444 !important; }
+
+/* ================================
+   Botões Customizados
+================================ */
+.btn-proxima {
+  background: #4f46e5;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 1rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 0 #3730a3;
+  transition: all 0.1s;
+}
+.btn-proxima:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #3730a3;
 }
 
-/* Responsividade */
+.btn-reiniciar {
+  background: #eab308;
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 1rem;
+  font-weight: 900;
+  box-shadow: 0 6px 0 #a16207;
+}
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4D38FF;
+  border-radius: 10px;
+}
+
+/* Animações */
+@keyframes scaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-scaleUp { animation: scaleUp 0.3s ease-out; }
+
 @media (max-width: 768px) {
-  .pergunta-container {
-    max-height: calc(100vh - 120px);
-    padding: 1rem;
-  }
+  .pergunta-container { padding: 0 1rem 1rem 1rem; border-radius: 1rem 1rem 0 0; }
+  .li-alternativa { padding: 1rem; }
 }

@@ -100,7 +100,9 @@ export class PerguntasComponent implements OnInit {
       this.mostrarExplicacao = false;
       this.pontuacao = 0;
 
-      gsap.to('#barra-progresso', { width: '0%', duration: 0.5 });
+      if (this.isBrowser) {
+        gsap.to('#barra-progresso', { width: '0%', duration: 0.5 });
+      }
     } catch (e) {
       this.erro = 'Erro ao carregar quiz.';
     } finally {
@@ -124,8 +126,8 @@ export class PerguntasComponent implements OnInit {
 
       gsap.fromTo(
         '#feedback',
-        { scale: 0 },
-        { scale: 1.2, duration: 0.6, ease: 'elastic.out(1,0.6)' }
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.7)' }
       );
 
       gsap.to('#barra-progresso', {
@@ -133,33 +135,39 @@ export class PerguntasComponent implements OnInit {
         duration: 0.5,
       });
 
-      this.scrollSuave();
+      this.scrollSuave('feedback');
     } else {
       const indexErro = Math.floor(Math.random() * this.frasesErro.length);
       this.feedback = this.frasesErro[indexErro];
 
       this.somErro.play();
 
-      // Shake apenas do texto interno
       gsap.fromTo(
         `#alt-${letra} .alternativa-texto`,
         { x: -5 },
         { x: 5, repeat: 5, yoyo: true, duration: 0.1, force3D: true }
       );
 
-      this.scrollSuave();
+      this.scrollSuave('feedback');
     }
   }
 
-  scrollSuave() {
+  /**
+   * Realiza o scroll interno no container do quiz
+   */
+  scrollSuave(elementId: string) {
     if (!this.isBrowser) return;
 
     setTimeout(() => {
-      const el = document.getElementById('feedback');
-      if (el) {
-        el.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
+      const el = document.getElementById(elementId);
+      const container = document.querySelector('.pergunta-container');
+      
+      if (el && container) {
+        // Calcula a posição do elemento relativa ao container de scroll
+        const targetPos = el.offsetTop - 50; 
+        container.scrollTo({
+          top: targetPos,
+          behavior: 'smooth'
         });
       }
     }, 300);
@@ -174,9 +182,15 @@ export class PerguntasComponent implements OnInit {
     this.mostrarExplicacao = false;
     this.somClick.play();
 
+    // Volta o scroll do container para o topo para a nova pergunta
+    const container = document.querySelector('.pergunta-container');
+    if (container) {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     gsap.from('.pergunta-container', {
       opacity: 0,
-      y: 40,
+      y: 20,
       duration: 0.4,
     });
   }
@@ -188,6 +202,11 @@ export class PerguntasComponent implements OnInit {
   reiniciarQuiz() {
     this.carregarQuiz();
     this.somClick.play();
+    
+    const container = document.querySelector('.pergunta-container');
+    if (container) {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   irParaHome() {

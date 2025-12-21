@@ -14,30 +14,28 @@ html, body {
   background-color: #081a5c;
 }
 
-
 /* =====================================
    BACKGROUND GABARITA (MINIMAL BLUE)
 ===================================== */
 @layer utilities {
   .bg-gabarita {
-  position: relative;
-  width: 100%;
-  height: 100vh;        /* força ocupar exatamente a tela */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* centraliza verticalmente */
-  overflow: hidden;      /* evita qualquer rolagem desnecessária */
-  background:
-    radial-gradient(
-      circle at center,
-      #1f3cff 0%,
-      #0f2bb8 35%,
-      #081a5c 75%,
-      #050f3a 100%
-    );
-}
-
+    position: relative;
+    width: 100%;
+    height: 100vh;        /* força ocupar exatamente a tela */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* centraliza verticalmente */
+    overflow: hidden;      /* evita qualquer rolagem desnecessária */
+    background:
+      radial-gradient(
+        circle at center,
+        #1f3cff 0%,
+        #0f2bb8 35%,
+        #081a5c 75%,
+        #050f3a 100%
+      );
+  }
 
   /* Textura e efeitos visuais */
   .bg-gabarita::before {
@@ -46,7 +44,7 @@ html, body {
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background:
+    background-image:
       repeating-conic-gradient(
         from 0deg at center,
         rgba(255, 255, 255, 0.035) 0deg,
@@ -60,17 +58,40 @@ html, body {
       ),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='900' font-size='140' fill='rgba(0,0,0,0.18)' text-anchor='middle' dominant-baseline='central' transform='rotate(-25 90 90)'%3E?%3C/text%3E%3C/svg%3E"),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='900' font-size='120' fill='rgba(0,0,0,0.16)' text-anchor='middle' dominant-baseline='central' transform='rotate(15 90 90)'%3E?%3C/text%3E%3C/svg%3E");
+    
+    /* PADRÃO DESKTOP */
     background-position:
       center,
       center,
       12% 18%,
       88% 82%;
+    
     background-size:
       cover,
       cover,
       220px 220px,
       220px 220px;
     background-repeat: no-repeat;
+  }
+
+  /* AJUSTE PARA MOBILE (Telas menores que 768px) */
+  @media (max-width: 768px) {
+    .bg-gabarita::before {
+      /* Movemos as interrogações para bem perto das laterais (2% e 98%) */
+      /* E subimos/descemos elas para não baterem no formulário central */
+      background-position:
+        center,
+        center,
+        -5% 10%,   /* Interrogação superior esquerda bem pra fora */
+        105% 90%;  /* Interrogação inferior direita bem pra fora */
+      
+      /* Reduzimos um pouco o tamanho no mobile para não ocupar a tela toda */
+      background-size:
+        cover,
+        cover,
+        180px 180px,
+        180px 180px;
+    }
   }
 
   .bg-gabarita::after {

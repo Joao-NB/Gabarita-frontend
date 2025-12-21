@@ -1,8 +1,27 @@
 <div class="bg-gabarita w-screen min-h-screen flex flex-col items-center p-4 relative overflow-hidden">
-  <!-- Container central que cresce -->
+  
+  <div class="absolute top-6 left-6 z-50">
+    <button 
+      (click)="irParaHome()" 
+      class="flex items-center gap-2 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/10 px-4 py-2 rounded-xl transition-all duration-300 group active:scale-95 shadow-lg"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        class="w-5 h-5 text-blue-400 group-hover:-translate-x-1 transition-transform duration-300" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span class="text-white text-[11px] md:text-xs font-black uppercase tracking-[0.2em] select-none">
+        Voltar
+      </span>
+    </button>
+  </div>
+
   <div class="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto">
     
-    <!-- Logo -->
     <img
       #logo
       src="../assets/images/logo_gabarita.png"
@@ -11,12 +30,10 @@
       draggable="false"
     />
 
-    <!-- Título -->
     <h1 class="text-white text-base md:text-lg font-bold tracking-widest text-center drop-shadow-lg mb-6">
       ESTUDE E ALCANCE A APROVAÇÃO
     </h1>
 
-    <!-- Formulário -->
     <div class="w-full flex justify-center">
       <app-form-navegacao></app-form-navegacao>
     </div>

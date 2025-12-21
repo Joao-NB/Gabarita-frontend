@@ -1,12 +1,13 @@
 import { Component, AfterViewInit, ViewChild, ViewChildren, QueryList, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common'; // Adicionado CommonModule
+import { Router } from '@angular/router'; // 1. Importado Router
 import { gsap } from 'gsap';
-import { isPlatformBrowser } from '@angular/common';
 import { FormNavegacaoComponent } from '../form-navegacao/form-navegacao.component';
 
 @Component({
   selector: 'app-navegacao',
   standalone: true,
-  imports: [FormNavegacaoComponent],
+  imports: [CommonModule, FormNavegacaoComponent], // Adicionado CommonModule para diretivas básicas
   templateUrl: './navegacao.component.html',
   styleUrls: ['./navegacao.component.scss'],
 })
@@ -14,7 +15,16 @@ export class NavegacaoComponent implements AfterViewInit {
   @ViewChild('logo', { static: true }) logo!: ElementRef<HTMLImageElement>;
   @ViewChildren('particle1, particle2, particle3, particle4') particles!: QueryList<ElementRef<HTMLSpanElement>>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  // 2. Injetado PLATFORM_ID e Router no construtor
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
+  ) {}
+
+  // 3. Método para voltar para a Home
+  irParaHome() {
+    this.router.navigate(['/']);
+  }
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
@@ -23,14 +33,14 @@ export class NavegacaoComponent implements AfterViewInit {
     // Logo flutuar + pulse glow suave + pausa
     // =========================
     gsap.to(this.logo.nativeElement, {
-      y: -10,                // float
-      scale: 1.05,            // pulse suave
+      y: -10,                 // float
+      scale: 1.05,             // pulse suave
       filter: "drop-shadow(0 0 8px rgba(255,255,255,0.25)) drop-shadow(0 0 16px rgba(255,255,255,0.15))",
-      duration: 3,            // mais lento
+      duration: 3,             // mais lento
       ease: "sine.inOut",
       yoyo: true,
       repeat: -1,
-      repeatDelay: 0.5,       // pausa no topo e fundo do ciclo
+      repeatDelay: 0.5,        // pausa no topo e fundo do ciclo
       onUpdate: function () {
         const t = this['progress']();
         const glow = 8 + 8 * Math.sin(t * Math.PI * 2);

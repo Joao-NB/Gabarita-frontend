@@ -18,6 +18,7 @@ export class HomeComponent implements AfterViewInit {
   @ViewChild('avatarEl') avatarEl!: ElementRef<HTMLDivElement>;
 
   abaAtiva: Aba = 'anonimo';
+  menuAberto = false; // Controle do modal do menu
 
   /** PERSONAGENS */
   personagens = ['🧠', '📘', '🚀', '🧩', '🎓'];
@@ -64,6 +65,11 @@ export class HomeComponent implements AfterViewInit {
       this.clickSound.currentTime = 0;
       this.clickSound.play();
     }
+  }
+
+  toggleMenu() {
+    this.playClick();
+    this.menuAberto = !this.menuAberto;
   }
 
   selecionarAba(aba: Aba) {
