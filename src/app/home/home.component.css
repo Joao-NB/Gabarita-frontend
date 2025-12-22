@@ -5,3 +5,13 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
+
+/* fundo para avatar 1 */
+.avatar-bg-1 {
+  background-color: #00bcd4; /* ciano */
+}
+
+/* fundo para avatar 2 */
+.avatar-bg-2 {
+  background-color: #ff9800; /* laranja */
+}

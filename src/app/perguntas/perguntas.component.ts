@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormNavegacaoComponent } from '../form-navegacao/form-navegacao.component';
-import { LocalStorageService } from '../_services/local-storage.service';
+import { QuizService } from '../_services/quiz.service';
 import { gsap } from 'gsap';
 
 interface Pergunta {
@@ -30,6 +30,8 @@ export class PerguntasComponent implements OnInit {
   mostrarExplicacao = false;
 
   pontuacao = 0;
+  correctCount = 0;
+  wrongCount = 0;
   isBrowser = typeof window !== 'undefined';
 
   somAcerto!: HTMLAudioElement;
@@ -63,7 +65,7 @@ export class PerguntasComponent implements OnInit {
   ];
 
   constructor(
-    private localStorageService: LocalStorageService,
+    private quizService: QuizService,
     private router: Router
   ) {}
 
@@ -82,23 +84,21 @@ export class PerguntasComponent implements OnInit {
     this.carregando = true;
 
     try {
-      const respostaSalva = this.localStorageService.getItem('respostaSalva');
+      const respostaSalva = localStorage.getItem('respostaSalva');
       if (!respostaSalva) {
         this.erro = 'Nenhuma questão encontrada.';
         return;
       }
 
-      const data =
-        typeof respostaSalva === 'string'
-          ? JSON.parse(respostaSalva)
-          : respostaSalva;
-
+      const data = JSON.parse(respostaSalva);
       this.questoes = data.questoes || [];
       this.perguntaAtual = 0;
       this.respostaSelecionada = null;
       this.feedback = null;
       this.mostrarExplicacao = false;
       this.pontuacao = 0;
+      this.correctCount = 0;
+      this.wrongCount = 0;
 
       if (this.isBrowser) {
         gsap.to('#barra-progresso', { width: '0%', duration: 0.5 });
@@ -122,6 +122,7 @@ export class PerguntasComponent implements OnInit {
 
       this.mostrarExplicacao = true;
       this.pontuacao++;
+      this.correctCount++;
       this.somAcerto.play();
 
       gsap.fromTo(
@@ -140,6 +141,7 @@ export class PerguntasComponent implements OnInit {
       const indexErro = Math.floor(Math.random() * this.frasesErro.length);
       this.feedback = this.frasesErro[indexErro];
 
+      this.wrongCount++;
       this.somErro.play();
 
       gsap.fromTo(
@@ -152,9 +154,6 @@ export class PerguntasComponent implements OnInit {
     }
   }
 
-  /**
-   * Realiza o scroll interno no container do quiz
-   */
   scrollSuave(elementId: string) {
     if (!this.isBrowser) return;
 
@@ -163,8 +162,7 @@ export class PerguntasComponent implements OnInit {
       const container = document.querySelector('.pergunta-container');
       
       if (el && container) {
-        // Calcula a posição do elemento relativa ao container de scroll
-        const targetPos = el.offsetTop - 50; 
+        const targetPos = el.offsetTop - 50;
         container.scrollTo({
           top: targetPos,
           behavior: 'smooth'
@@ -182,7 +180,6 @@ export class PerguntasComponent implements OnInit {
     this.mostrarExplicacao = false;
     this.somClick.play();
 
-    // Volta o scroll do container para o topo para a nova pergunta
     const container = document.querySelector('.pergunta-container');
     if (container) {
       container.scrollTo({ top: 0, behavior: 'smooth' });
@@ -193,6 +190,11 @@ export class PerguntasComponent implements OnInit {
       y: 20,
       duration: 0.4,
     });
+
+    // Se for a última pergunta, finaliza automaticamente
+    if (!this.temProximaPergunta()) {
+      this.finalizarQuiz();
+    }
   }
 
   temProximaPergunta() {
@@ -206,6 +208,21 @@ export class PerguntasComponent implements OnInit {
     const container = document.querySelector('.pergunta-container');
     if (container) {
       container.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  async finalizarQuiz() {
+    const quizId = localStorage.getItem('quizId');
+    if (!quizId) return;
+
+    try {
+      const response = await this.quizService
+        .submitQuiz(quizId, this.pontuacao, this.correctCount, this.wrongCount)
+        .toPromise();
+
+      console.log('Quiz submetido:', response);
+    } catch (err) {
+      console.error('Erro ao submeter quiz:', err);
     }
   }
 

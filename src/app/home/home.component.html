@@ -1,34 +1,6 @@
 <div class="w-full h-screen flex flex-col items-center justify-center md:justify-start bg-gabarita px-4 py-4 relative overflow-hidden">
 
-  <button 
-    (click)="toggleMenu()"
-    class="absolute top-6 left-6 z-50 p-2 text-white/80 hover:text-white transition-colors md:hidden active:scale-95">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-12 h-12 drop-shadow-md">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
-  </button>
-
-  <div *ngIf="menuAberto" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gabarita/90 backdrop-blur-xl animate-fadeIn p-6">
-    
-    <button (click)="toggleMenu()" class="absolute top-6 right-6 p-2 text-white/60 hover:text-white">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-10 h-10">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-
-    <div class="flex flex-col gap-8 text-center">
-      <h3 class="text-white text-2xl font-black uppercase tracking-widest mb-4 opacity-50">Menu</h3>
-      
-      <a href="https://github.com/Joao-NB" class="text-white text-lg font-bold uppercase tracking-widest hover:text-blue-400 transition-colors">Termos de Uso</a>
-      <a href="https://github.com/Joao-NB" class="text-white text-lg font-bold uppercase tracking-widest hover:text-blue-400 transition-colors">Privacidade</a>
-      <a href="https://github.com/Joao-NB" class="text-white text-lg font-bold uppercase tracking-widest hover:text-blue-400 transition-colors">Contato</a>
-    </div>
-
-    <div class="mt-12 opacity-30">
-      <img src="../assets/images/logo_gabarita.png" alt="Logo" class="w-32 grayscale">
-    </div>
-  </div>
-
+  <!-- LOGO -->
   <div class="w-full flex flex-col items-center shrink-0 pt-2 z-10">
     <img #logo 
          src="../assets/images/logo_gabarita.png" 
@@ -37,9 +9,11 @@
          draggable="false">
   </div>
 
+  <!-- CARD -->
   <div class="w-full flex flex-col items-center justify-center z-10 mt-4 md:mt-0">
     <div class="w-full max-w-md flex flex-col items-stretch">
 
+      <!-- ABAS -->
       <div class="flex w-full gap-0 mb-2">
         <button (click)="selecionarAba('anonimo')"
           class="flex-1 py-3 md:py-4 rounded-t-xl font-black uppercase text-[14px] md:text-[15px] tracking-tighter transition-all duration-200"
@@ -58,22 +32,21 @@
         </button>
       </div>
 
+      <!-- CONTEÚDO DO CARD -->
       <div class="bg-gabaritaBlue bg-opacity-60 backdrop-blur-md rounded-b-xl p-6 md:p-8 flex flex-col items-center justify-center shadow-2xl relative z-10">
 
-        <div *ngIf="abaAtiva === 'anonimo'" 
-             class="w-full animate-fadeIn flex flex-col items-center space-y-4 md:space-y-5">
+        <!-- ABA ANÔNIMO -->
+        <div *ngIf="abaAtiva === 'anonimo'" class="w-full animate-fadeIn flex flex-col items-center space-y-4 md:space-y-5">
 
+          <!-- AVATAR -->
           <div class="relative">
-            <div class="rounded-full p-1.5 bg-gradient-to-tr from-white to-blue-300 shadow-[0_0_25px_rgba(52,211,153,0.3)]">
-              <div #avatarEl
-                   class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gabaritaBlue flex items-center justify-center text-4xl md:text-5xl select-none">
-                {{ personagemAtual }}
-              </div>
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center border-4 border-white shadow-lg"
+                 [ngStyle]="{'background-color': avatarBackground}">
+              <img [src]="avatarSelecionado" alt="Avatar" class="w-16 h-16 md:w-20 md:h-20 rounded-full">
             </div>
 
-            <button
-              (click)="trocarPersonagem()"
-              class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform active:rotate-180 duration-300">
+            <button (click)="trocarAvatar()"
+                    class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg hover:scale-110 transition-transform active:rotate-180 duration-300">
               <svg class="w-4 h-4 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                   d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
@@ -82,52 +55,41 @@
             </button>
           </div>
 
+          <!-- NICKNAME -->
           <div class="w-full text-center">
             <p class="text-white text-[13px] md:text-[14px] uppercase font-black mb-2 opacity-70 tracking-widest">
               Escolha seu Nickname
             </p>
-            <input type="text" placeholder="FilhoDoBil" 
+            <input type="text" placeholder="FilhoDoBil" [(ngModel)]="nickname"
               class="w-full bg-white bg-opacity-10 border-none rounded-xl p-4 text-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all">
           </div>
 
+          <!-- BOTÃO COMEÇAR -->
           <button (click)="jogar()"
             class="w-3/4 md:w-2/4 max-w-xs py-4 bg-green-500 text-white rounded-xl text-sm font-black uppercase shadow-[0_5px_0_#15803d] active:shadow-none active:translate-y-1 transition-all z-20">
             <span class="mr-1 text-[15px]">▶</span> Começar Agora
           </button>
         </div>
 
-        <div *ngIf="abaAtiva === 'autenticado'" 
-             class="w-full animate-fadeIn flex flex-col items-center space-y-6">
-
+        <!-- ABA AUTENTICADO -->
+        <div *ngIf="abaAtiva === 'autenticado'" class="w-full animate-fadeIn flex flex-col items-center space-y-6">
           <p class="text-white text-[14px] md:text-[15px] uppercase font-black opacity-70 tracking-widest text-center">
             Logue para ver seu score
           </p>
-
           <div class="flex flex-col gap-3 w-full">
-            <button
-              (click)="logar()"
+            <button (click)="logar()"
               class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold uppercase tracking-wide transition-all duration-300 shadow-lg hover:shadow-blue-500/30">
               Entrar
             </button>
-
-            <button
-              (click)="cadastrar()"
+            <button (click)="cadastrar()"
               class="w-full text-xs text-blue-200 hover:text-white transition-colors uppercase font-bold tracking-tighter opacity-70 pt-2">
               Ainda não tem conta?
               <span class="underline underline-offset-2">Cadastre-se</span>
             </button>
           </div>
-
         </div>
 
       </div>
     </div>
   </div>
-
-  <div class="hidden md:flex w-full justify-center gap-6 text-white text-opacity-30 text-[10px] font-bold uppercase tracking-widest shrink-0 mt-4 z-10">
-    <a href="https://github.com/Joao-NB/Gabarita-frontend/blob/master/README.md" class="hover:text-white transition-colors">Termos</a>
-    <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Privacidade</a>
-    <a href="https://github.com/Joao-NB" class="hover:text-white transition-colors">Contato</a>
-  </div>
-
 </div>
